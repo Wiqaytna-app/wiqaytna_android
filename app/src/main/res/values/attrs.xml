@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StepProgressBar">
+        <attr name="inactiveDotColor" format="color" />
+        <attr name="activeDotColor" format="color" />
+        <attr name="inactiveDotIcon" format="reference" />
+        <attr name="activeDotIcon" format="reference" />
+        <attr name="dotSize" format="dimension" />
+        <attr name="spacing" format="dimension" />
+        <attr name="activeDotIndex" format="integer" />
+        <attr name="cumulativeDots" format="boolean" />
+        <attr name="numberDots" format="integer" />
+    </declare-styleable>
+</resources>

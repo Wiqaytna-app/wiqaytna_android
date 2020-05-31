@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp">
+
+        <TextView
+            android:id="@+id/language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="18dp"
+            android:text="@string/language_choice"
+            android:textColor="@color/new_blue"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        android:text="@string/register_number"
+        android:textSize="20sp"
+        android:textColor="@color/new_blue_2"
+        android:textAlignment="center"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/black"
+        android:text="@string/mobile_number"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="6dp"
+        app:cardUseCompatPadding="true">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:weightSum="1"
+          android:layoutDirection="ltr"
+          android:orientation="horizontal"
+          android:paddingLeft="12dp"
+          android:paddingRight="12dp"
+          android:paddingTop="6dp"
+          android:paddingBottom="6dp">
+
+          <ImageView
+              android:id="@+id/flag"
+              android:layout_width="40dp"
+              android:layout_height="20dp"
+              android:layout_marginTop="2dp"
+              android:layout_gravity="center_vertical"
+              android:layout_alignParentLeft="true"
+              android:src="@drawable/flag_morocco"/>
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:textDirection="ltr"
+              android:textColor="@color/black"
+              android:textStyle="bold"
+              android:textSize="16sp"
+              android:text="@string/country_code" />
+
+          <EditText
+              android:id="@+id/phone_number"
+              android:layout_width="0dp"
+              android:layout_weight="1"
+              android:textAlignment="textEnd"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:imeOptions="actionGo"
+              android:inputType="number"
+              android:backgroundTint="@color/transparent"
+              android:hint="@string/mobile_number"
+              android:maxLength="10"
+              android:textStyle="bold"
+              android:textSize="16sp"
+              android:textDirection="ltr"/>
+
+      </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/phone_number_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/invalid_number"
+        android:textAlignment="textStart"
+        android:textColor="@color/error"
+        android:visibility="gone"
+        android:layout_marginStart="18dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginTop="14dp"
+        android:textColor="@color/black"
+        android:text="@string/send_otp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <include layout="@layout/button_and_progress" />
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

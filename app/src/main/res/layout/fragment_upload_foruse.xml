@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:weightSum="6">
+
+    <ImageView
+        android:id="@+id/language"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginStart="18dp"
+        android:src="@drawable/ic_settings" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginTop="80dp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/new_blue_2"
+        android:text="@string/forusermho" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginTop="30dp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="@string/upload_screen_next" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:id="@+id/forUseFragmentActionButton"
+            android:background="@drawable/button_background"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_alignParentBottom="true"
+            android:textFontWeight="600"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textColor="@color/white"
+            android:text="@string/next"
+            android:textStyle="normal"
+            android:textAllCaps="false" />
+    </RelativeLayout>
+
+</LinearLayout>

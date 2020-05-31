@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:fillViewport="true">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="covid.trace.morocco.onboarding.PersonalInfosActivity">
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="18dp"
+        android:tint="@color/new_blue"
+        android:src="@drawable/ic_close_black_24dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:textSize="19sp"
+        android:textColor="@color/black"
+        android:text="@string/age"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginLeft="18dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="50dp"
+            android:layout_marginEnd="6dp"
+            app:cardUseCompatPadding="true">
+
+            <RadioButton
+                android:id="@+id/firstRange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/icon_checkbox_new"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:text="@string/first_range"
+                android:textAlignment="center"
+                />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:cardUseCompatPadding="true">
+
+            <RadioButton
+                android:id="@+id/secondRange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/icon_checkbox_new"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:text="@string/second_range"
+                android:textAlignment="center"
+                />
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="18dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="5dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            app:cardUseCompatPadding="true">
+
+            <RadioButton
+                android:id="@+id/thirdRange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/icon_checkbox_new"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:text="@string/third_range"
+                android:textAlignment="center"
+                />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:cardUseCompatPadding="true">
+
+            <RadioButton
+                android:id="@+id/fourthRange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/icon_checkbox_new"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:text="@string/fourth_range"
+                android:textAlignment="center"
+                />
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="18dp"
+        android:text="@string/gender"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_marginEnd="10dp"
+            app:cardUseCompatPadding="true"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/woman"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/icon_checkbox_new"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:textAlignment="center"
+                android:text="@string/woman" />
+
+
+        </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true"
+        android:layout_weight="1">
+
+        <RadioButton
+            android:id="@+id/man"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/icon_checkbox_new"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:textAlignment="center"
+            android:text="@string/man" />
+
+
+    </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="18dp"
+        android:text="@string/region"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        app:cardUseCompatPadding="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/region"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:paddingStart="14dp"
+            android:paddingEnd="10dp"
+            android:drawableEnd="@drawable/ic_arrow_down"
+            android:backgroundTint="@color/transparent"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:hint="@string/region"
+            android:textSize="16sp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="18dp"
+        android:text="@string/province"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        app:cardUseCompatPadding="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/province"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:paddingStart="14dp"
+            android:paddingEnd="10dp"
+            android:drawableEnd="@drawable/ic_arrow_down"
+            android:backgroundTint="@color/transparent"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:hint="@string/province"
+            android:textSize="16sp" />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="18dp"
+        android:text="@string/language"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/radioGroup2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_marginEnd="10dp"
+            app:cardUseCompatPadding="true"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/arabe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/icon_checkbox_new"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:textAlignment="center"
+                android:text="@string/arabe" />
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true"
+            android:layout_weight="1">
+
+            <RadioButton
+                android:id="@+id/french"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/icon_checkbox_new"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:textAlignment="center"
+                android:text="@string/french" />
+
+
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_background"
+        android:text="@string/save"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        android:textFontWeight="600"
+        android:textSize="18sp" />
+
+
+</LinearLayout>
+</ScrollView>

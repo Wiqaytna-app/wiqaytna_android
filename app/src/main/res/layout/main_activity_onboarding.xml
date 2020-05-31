@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillViewport="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".onboarding.OnboardingActivity">
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_title"
+        style="@style/OnboardingTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="@string/tv_onboarding_title"
+        android:textAlignment="center"
+        android:textColor="@color/new_blue_2"
+        android:textSize="24dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_desc"
+        style="@style/OnboardingDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="@string/tv_onboarding_desc"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <TextView
+        android:id="@+id/language"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/language_choice"
+        android:textColor="@color/new_blue"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textAlignment="viewStart"
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_title"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.169" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:text="@string/conditions"
+        android:textColor="@color/new_blue_2"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_desc"
+        app:layout_constraintVertical_bias="0.05" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="1dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_bluetooth_condition"
+                android:drawablePadding="10dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:text="@string/conditions_bluetooth"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:drawableStart="@drawable/ic_infecter_condition"
+                android:drawablePadding="10dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:text="@string/conditions_send_infos" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:drawableStart="@drawable/ic_contact_condition"
+                android:drawablePadding="10dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:text="@string/conditions_call_you" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="135dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_morocco_illustartion_masked"
+        app:layout_constraintBottom_toTopOf="@+id/tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/language"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@id/cardView"
+        android:orientation="vertical">
+
+        <covid.trace.morocco.view.StepProgressBar
+            android:id="@+id/pbProgress"
+            style="@style/MyProgressBar"
+            android:indeterminate="false"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="300dp"
+            android:layout_marginBottom="17dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            app:cumulativeDots="true"
+            app:activeDotIndex="0"
+            app:activeDotIcon="@drawable/ic_progress_active"
+            app:inactiveDotIcon="@drawable/ic_progress_inactive"
+            app:numberDots="4"
+            app:spacing="8dp" />
+
+        <Button
+            android:id="@+id/btn_onboardingStart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/button_background"
+            android:text="@string/i_want_to_help"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textFontWeight="600"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/tou"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:textAlignment="center"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:textSize="14sp"
+            android:textColor="@color/new_blue"
+            android:text="@string/link_conditions" />
+
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

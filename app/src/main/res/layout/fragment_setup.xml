@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    tools:context=".onboarding.OnboardingActivity">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/new_blue"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/language_choice"/>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:gravity="center"
+            android:textColor="@color/new_blue_2"
+            android:text="@string/setup_app_permission" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="35dp"
+        android:gravity="center"
+        android:textColor="@color/new_blue_2"
+        android:text="@string/need_bluetooth"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:textColor="@color/new_blue_2"
+        android:text="@string/we_dont_collect_gps_infos"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/bluetooth_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="6sp"
+                android:layout_marginTop="35dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="13dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_bluetooth"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/bluetooth"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"/>
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:buttonTint="@color/grey_7" />
+
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/battery_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="6sp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="14dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="13dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_battery_optimisation"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:text="@string/battery_optimiser_opt"
+                        />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:buttonTint="@color/grey_7"
+                        />
+
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/location_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="6sp"
+                android:layout_marginTop="14dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="13dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_location"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/location_permissions"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:buttonTint="@color/grey_7"
+                        />
+
+                </RelativeLayout>
+
+
+
+            </androidx.cardview.widget.CardView>
+
+            <FrameLayout
+                android:id="@+id/footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <include layout="@layout/button_and_progress" />
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>
+</ScrollView>

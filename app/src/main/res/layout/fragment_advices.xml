@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/transparent">
+
+        <ImageView
+            android:id="@+id/settings"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="27dp"
+            android:src="@drawable/ic_settings"
+            />
+
+            <TextView
+                android:id="@+id/advies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="18dp"
+                android:textAlignment="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="@string/advices"
+                android:textStyle="bold"
+                android:textColor="@color/new_blue_2" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="@string/advice_title"/>
+
+        <LinearLayout
+            android:id="@+id/advices_content"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginTop="7dp"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardElevation="1dp"
+                app:cardCornerRadius="4dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_hand"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:paddingStart="17dp"
+                        android:paddingEnd="17dp"
+                        android:textColor="@color/black"
+                        android:text="@string/advice_1"/>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardElevation="1dp"
+                app:cardCornerRadius="4dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_mask"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:paddingStart="17dp"
+                        android:paddingEnd="17dp"
+                        android:textColor="@color/black"
+                        android:text="@string/advice_9"/>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardElevation="1dp"
+                app:cardCornerRadius="4dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_advice_dont_touch"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:paddingStart="17dp"
+                        android:paddingEnd="17dp"
+                        android:textColor="@color/black"
+                        android:text="@string/advice_2"/>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="1dp"
+                app:cardCornerRadius="4dp"
+                android:layout_marginTop="8dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_advice_crowds"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:paddingStart="17dp"
+                        android:paddingEnd="17dp"
+                        android:textColor="@color/black"
+                        android:text="@string/advice_3"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:textAlignment="center"
+                        android:paddingStart="17dp"
+                        android:paddingEnd="17dp"
+                        android:textColor="@color/black"
+                        android:text="@string/advice_4"/>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="1dp"
+                app:cardCornerRadius="4dp"
+                android:layout_marginTop="8dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_advice_cover_mouth"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:paddingStart="17dp"
+                        android:paddingEnd="17dp"
+                        android:textColor="@color/black"
+                        android:text="@string/advice_5"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:textAlignment="center"
+                        android:paddingStart="17dp"
+                        android:paddingEnd="17dp"
+                        android:textColor="@color/black"
+                        android:text="@string/advice_6"/>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="1dp"
+                app:cardCornerRadius="4dp"
+                android:layout_marginTop="8dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_advice_doctor"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:paddingStart="17dp"
+                        android:paddingEnd="17dp"
+                        android:textColor="@color/black"
+                        android:text="@string/advice_7"/>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="1dp"
+                app:cardCornerRadius="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="10dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_advice_phone"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:paddingStart="17dp"
+                        android:paddingEnd="17dp"
+                        android:textColor="@color/black"
+                        android:text="@string/advice_8"/>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

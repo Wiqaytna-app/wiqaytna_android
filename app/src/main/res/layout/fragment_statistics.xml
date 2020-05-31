@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="27dp">
+
+                <ImageView
+                    android:id="@+id/settings"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_settings"
+                    />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="start"
+                android:textSize="20sp"
+                android:textColor="@color/new_blue_2"
+                android:textStyle="bold"
+                android:text="@string/latest_epidemic_statistics"/>
+
+            <TextView
+                android:id="@+id/lastUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_gravity="start"
+                android:layout_marginEnd="18dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:text="@string/last_update_24_hours_ago"/>
+
+            <TextView
+                android:id="@+id/tv_last_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="18dp"
+                android:text="Last update: X:XX XX"
+                android:textColor="@color/blue_update"
+                android:textStyle="bold"
+                android:visibility="invisible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:weightSum="2"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="1dp"
+                        card_view:cardUseCompatPadding="true"
+                        card_view:contentPadding="0dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:text="@string/healing_state"
+                                android:textColor="@color/sky_blue"
+                                android:textStyle="bold"
+                                />
+
+                            <TextView
+                                android:id="@+id/healing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:text="---"
+                                android:textSize="20sp"
+                                android:textColor="@color/sky_blue"/>
+
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        card_view:cardUseCompatPadding="true"
+                        app:cardElevation="1dp"
+                        card_view:contentPadding="0dp"
+                        android:layout_marginTop="4dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:text="@string/death"
+                                android:textColor="@color/yellow"
+                                android:textStyle="bold"
+                                />
+
+                            <TextView
+                                android:id="@+id/deaths"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:text="---"
+                                android:textColor="@color/yellow"
+                                android:textSize="20sp"/>
+
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:cardElevation="1dp"
+                    android:layout_marginStart="10dp"
+                    card_view:cardUseCompatPadding="true"
+                    card_view:contentPadding="0dp"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/confirmed_cases"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:textColor="@color/new_red"
+                            android:textAlignment="center"
+                            android:textStyle="bold"
+                            android:text="---"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/new_red"
+                            android:textStyle="bold"
+                            android:text="@string/confirmed_cases"/>
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:layout_marginStart="18dp"
+                android:layout_gravity="start"
+                android:textColor="@color/black"
+                android:text="@string/sum_cases"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:weightSum="2"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        card_view:cardUseCompatPadding="true"
+                        app:cardElevation="1dp"
+                        card_view:contentPadding="0dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:text="@string/healing_state"
+                                android:textColor="@color/sky_blue"
+                                android:textStyle="bold"
+                                />
+
+                            <TextView
+                                android:id="@+id/healing_all"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:text="---"
+                                android:textSize="20sp"
+                                android:textColor="@color/sky_blue"/>
+
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        card_view:cardUseCompatPadding="true"
+                        app:cardElevation="1dp"
+                        card_view:contentPadding="0dp"
+                        android:layout_marginTop="4dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:text="@string/death"
+                                android:textColor="@color/yellow"
+                                android:textStyle="bold"
+                                />
+
+                            <TextView
+                                android:id="@+id/deaths_all"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:text="---"
+                                android:textColor="@color/yellow"
+                                android:textSize="20sp"/>
+
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    card_view:cardUseCompatPadding="true"
+                    card_view:contentPadding="0dp"
+                    app:cardElevation="1dp"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/confirmed_cases_all"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:textColor="@color/new_red"
+                            android:textAlignment="center"
+                            android:textStyle="bold"
+                            android:text="---"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/new_red"
+                            android:textStyle="bold"
+                            android:text="@string/confirmed_cases"/>
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="13dp"
+                android:layout_marginStart="18dp"
+                android:textColor="@color/black"
+                android:text="@string/number_confirmes_cases"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/regionsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>

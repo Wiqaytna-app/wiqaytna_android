@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view_setup"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="gone"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:paddingBottom="20dp">
+
+        <ImageView
+            android:id="@+id/imv_incomplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:paddingStart="66dp"
+            android:paddingEnd="66dp"
+            android:src="@drawable/ic_setup_incomplete" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:drawablePadding="5dp"
+            android:drawableEnd="@drawable/little_red_circle"
+            android:text="@string/setup_incomplete"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/help_us_identify"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_restart_app_setup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp"
+            android:background="@drawable/button_background"
+            android:minWidth="200dp"
+            android:text="@string/restart_app_setup"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textFontWeight="600"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/permission_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="start"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textAlignment="center"
+            android:text="@string/app_permission_status"
+            android:textColor="@color/grey_2"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/bluetooth_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            app:cardCornerRadius="12dp"
+            app:cardMaxElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_bluetooth"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/bluetooth"
+                    android:textColor="@color/grey_2"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/iv_bluetooth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/icon_checkbox"
+                    android:clickable="false" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/location_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardMaxElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_location"
+
+                    android:gravity="center_vertical|center_horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/location_permissions"
+                    android:textColor="@color/grey_2"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/iv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:src="@drawable/icon_checkbox" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/battery_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:cardCornerRadius="12dp"
+            app:cardMaxElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="0dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_battery_optimisation"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/battery_optimiser_opt"
+                    android:textColor="@color/grey_2"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/iv_battery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:src="@drawable/icon_checkbox" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/push_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardMaxElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="0dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+
+                    android:gravity="center_vertical|center_horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/push_noti"
+                    android:textColor="@color/grey_2"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/iv_push"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:src="@drawable/icon_checkbox" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</LinearLayout>
