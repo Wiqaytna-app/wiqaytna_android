@@ -3,7 +3,7 @@
 ![alt text](./app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
  "Wiqaytna Logo")
 
-Wiqaytna is a official Moroccan exposure norification app, based on the protocol Bluetrace implementation
+Wiqaytna is the official Moroccan exposure norification app, based on the protocol Bluetrace implementation
 
 ---
 
