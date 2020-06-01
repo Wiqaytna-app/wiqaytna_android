@@ -7,13 +7,13 @@ currently being supported with security updates.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.0.64  |  |
+| 1.0.66 and above             |
+                 
 
 
 ## Reporting a Vulnerability
 
 
-L'équipe Wiqaytna prend au sérieux les bogues de sécurité dans le code source Wiqaytna.
-Nous apprécions vos efforts pour divulguer de manière responsable vos résultats et nous nous efforcerons de reconnaître vos contributions.
+The Wiqaytna team and community take all security bugs in Vuetify seriously. We appreciate your efforts and responsible disclosure and will make every effort to acknowledge your contributions.
 
-Pour signaler un problème de sécurité, envoyez un e-mail à wiqaytna.app@gmail.com et incluez le mot "SECURITY" dans la ligne d'objet.
+To report a security issue, email wiqaytna.app@gmail.com and include the word "SECURITY" in the subject line.
