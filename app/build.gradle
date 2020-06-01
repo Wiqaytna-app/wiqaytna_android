@@ -82,6 +82,8 @@ android {
 
     buildTypes {
         debug {
+            manifestPlaceholders = [showPerfLogs:'true']
+
             buildConfigField "String", "FIREBASE_UPLOAD_BUCKET", STAGING_FIREBASE_UPLOAD_BUCKET
             buildConfigField "String", "BLE_SSID", STAGING_SERVICE_UUID
 
@@ -92,6 +94,7 @@ android {
         }
 
         release {
+            manifestPlaceholders = [showPerfLogs:'false']
 
             buildConfigField "String", "FIREBASE_UPLOAD_BUCKET", PRODUCTION_FIREBASE_UPLOAD_BUCKET
             buildConfigField "String", "BLE_SSID", PRODUCTION_SERVICE_UUID

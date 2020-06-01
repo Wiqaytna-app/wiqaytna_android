@@ -53,7 +53,7 @@
 
         <meta-data
             android:name="firebase_performance_logcat_enabled"
-            android:value="true" />
+            android:value="${showPerfLogs}" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
