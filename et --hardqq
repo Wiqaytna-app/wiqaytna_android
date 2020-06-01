@@ -1,0 +1,57 @@
+[33mcommit 69c5c4f321080e558860c224379d61181bf4b355[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Bendidi Ihab <ihabnobendidi@gmail.com>
+Date:   Mon Jun 1 19:44:42 2020 +0200
+
+    Update README.md
+
+[33mcommit 427b0f39489ff9e8867d925396684d47617d2bf4[m
+Author: Bendidi Ihab <ihabnobendidi@gmail.com>
+Date:   Mon Jun 1 17:37:55 2020 +0200
+
+    deleting the ignore of gradle properties
+
+[33mcommit 5a55ba1697d51d8aa39ac368011600c977ffcc01[m
+Author: Bendidi Ihab <ihabnobendidi@gmail.com>
+Date:   Mon Jun 1 17:37:27 2020 +0200
+
+    Update gradle.properties
+
+[33mcommit 3cffea6186bc68734b1ba67092f58dc58af70df8[m
+Author: Bendidi Ihab <ihabnobendidi@gmail.com>
+Date:   Mon Jun 1 16:36:23 2020 +0100
+
+    gradle properties file
+    
+    Gradle properties file is necessary to build application
+
+[33mcommit 68a3128a2abe496a0a92aa56bf71f0a2ae5b773c[m
+Author: Wiqaytna Maroc <66223725+Wiqaytna@users.noreply.github.com>
+Date:   Mon Jun 1 15:27:21 2020 +0100
+
+    Security.md
+    
+    Reporting a Vulnerability Policy
+
+[33mcommit d5bfdd13be7ea1949f3dd708c408e2e8bc038d06[m
+Author: Wiqaytna Maroc <66223725+Wiqaytna@users.noreply.github.com>
+Date:   Mon Jun 1 09:39:31 2020 +0100
+
+    Update README.md
+
+[33mcommit 5ce8ac265516dd798bbad433007cb0a472b62be8[m
+Author: zlakhdissi <63560072+zlakhdissi@users.noreply.github.com>
+Date:   Mon Jun 1 01:26:33 2020 +0100
+
+    Update README.md
+
+[33mcommit 15c50d3a8e6a95bec0c6c71ff03ae9d98896779d[m
+Author: zlakhdissi <63560072+zlakhdissi@users.noreply.github.com>
+Date:   Mon Jun 1 01:26:03 2020 +0100
+
+    Update README.md
+
+[33mcommit fa822c35b445df49f95dd4390e12bfdf39365f98[m
+Author: majhamza <hamzaahjam@dialy.net>
+Date:   Mon Jun 1 00:23:44 2020 +0100
+
+    Initial Commit

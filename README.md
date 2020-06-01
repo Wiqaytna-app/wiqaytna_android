@@ -7,6 +7,18 @@ Wiqaytna is the official Moroccan exposure notification app.
 
 ---
 
+## Getting started with the code
+
+To get started on the app, setup and configure the following:
+
+-    ./gradle.properties
+-    ./app/build.gradle
+-    Firebase - google-services.json
+-    Remote configs
+-    Protocol version
+
+
+
 ### Configs in gradle.properties
 
 Sample Configuration
