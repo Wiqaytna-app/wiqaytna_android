@@ -78,6 +78,7 @@ android {
         buildConfigField "String", "V2_CHARACTERISTIC_ID", V2_CHARACTERISTIC_ID
         buildConfigField "int", "ERROR_NOTIFICATION_ID", ERROR_NOTIFICATION_ID
 
+        resConfigs "fr", "ar"
     }
 
     buildTypes {
