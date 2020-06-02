@@ -10,7 +10,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.analytics.FirebaseAnalytics
 import covid.trace.morocco.LocaleHelper
 import covid.trace.morocco.PreferencesHelper
 import covid.trace.morocco.R
@@ -26,10 +25,7 @@ class OTPFragment : OnboardingFragmentInterface() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
-    private val COUNTDOWN_DURATION = 120L
     private var stopWatch: CountDownTimer? = null
-    private var tick = 0L
-    private val TAG: String = "OTPFragment"
 
     private lateinit var phoneNumber: String
 
@@ -101,19 +97,22 @@ class OTPFragment : OnboardingFragmentInterface() {
                 "21",
                 "Onboarding third screen"
             )
+
             LocaleHelper.getInstance().switchLocale()
             requireActivity().recreate()
         }
 
         resendCode.setOnClickListener {
             CentralLog.d(TAG, "resend pressed sent to $phoneNumber")
-            val onboardingActivity = activity as OnboardingActivity
+
             Utils.firebaseAnalyticsEvent(
                 requireContext(),
                 "otp_screen_resend_otp",
                 "18",
                 "Onboarding third screen resend otp"
             )
+
+            val onboardingActivity = activity as OnboardingActivity
             onboardingActivity.resendCode(phoneNumber)
             resetTimer()
             startTimer()
@@ -148,7 +147,6 @@ class OTPFragment : OnboardingFragmentInterface() {
                 if (s?.length == 1) otp3.requestFocus()
                 if (s?.length == 0) otp1.requestFocus()
             }
-
         })
 
         otp3.addTextChangedListener(object : TextWatcher {
@@ -163,7 +161,6 @@ class OTPFragment : OnboardingFragmentInterface() {
                 if (s?.length == 1) otp4.requestFocus()
                 if (s?.length == 0) otp2.requestFocus()
             }
-
         })
 
         otp4.addTextChangedListener(object : TextWatcher {
@@ -178,7 +175,6 @@ class OTPFragment : OnboardingFragmentInterface() {
                 if (s?.length == 1) otp5.requestFocus()
                 if (s?.length == 0) otp3.requestFocus()
             }
-
         })
 
         otp5.addTextChangedListener(object : TextWatcher {
@@ -193,7 +189,6 @@ class OTPFragment : OnboardingFragmentInterface() {
                 if (s?.length == 1) otp6.requestFocus()
                 if (s?.length == 0) otp4.requestFocus()
             }
-
         })
 
         otp6.addTextChangedListener(object : TextWatcher {
@@ -210,26 +205,21 @@ class OTPFragment : OnboardingFragmentInterface() {
                     Utils.hideKeyboardFrom(view!!.context, view!!)
                 }
             }
-
         })
     }
 
     override fun onUpdatePhoneNumber(num: String) {
         CentralLog.d(TAG, "onUpdatePhoneNumber $num")
-//        sent_to.text = HtmlCompat.fromHtml(
-//            getString(R.string.otp_sent, "<b>${num}</b>"),
-//            HtmlCompat.FROM_HTML_MODE_LEGACY
-//        )
         phoneNumber = num
         PreferencesHelper.setPreference("number", phoneNumber)
     }
 
     override fun onError(error: String) {
+        if (isDetached) return
+
         Utils.firebaseAnalyticsEvent(requireContext(), "Otp_error", "15", error)
-        if (!isDetached) {
-            tv_error.text = error
-            tv_error.visibility = View.VISIBLE
-        }
+        tv_error?.text = error
+        tv_error?.visibility = View.VISIBLE
     }
 
     override fun onAttach(context: Context) {
@@ -237,9 +227,8 @@ class OTPFragment : OnboardingFragmentInterface() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
-
     }
 
     private fun startTimer() {
@@ -265,7 +254,7 @@ class OTPFragment : OnboardingFragmentInterface() {
             }
         }
         stopWatch?.start()
-        resendCode.isEnabled = false
+        resendCode?.isEnabled = false
     }
 
     override fun onDestroy() {
@@ -273,10 +262,14 @@ class OTPFragment : OnboardingFragmentInterface() {
         stopWatch?.cancel()
     }
 
-
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    companion object {
+        const val COUNTDOWN_DURATION = 120L
+        const val TAG: String = "OTPFragment"
     }
 
     interface OnFragmentInteractionListener {

@@ -59,8 +59,9 @@ class EnterPinFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        Utils.firebaseAnalyticsEvent(requireContext(), "upload_screen_2", "11", "upload screen 2")
+        context?.let{
+            Utils.firebaseAnalyticsEvent(it, "upload_screen_2", "11", "upload screen 2")
+        }
 
         if (TextUtils.equals(
                 PreferencesHelper.getCurrentLanguage(),
@@ -146,10 +147,13 @@ class EnterPinFragment : Fragment() {
                             crashlytics.setCustomKey("error", "Failed to upload data")
                             val uid = FirebaseAuth.getInstance().currentUser?.uid
                             crashlytics.setCustomKey("uid", "$uid")
-                            NotificationTemplates.diskFullWarningNotification(
-                                requireContext(),
-                                BuildConfig.SERVICE_FOREGROUND_CHANNEL_ID
-                            )
+                            context?.let {context ->
+                                NotificationTemplates.diskFullWarningNotification(
+                                    context,
+                                    BuildConfig.SERVICE_FOREGROUND_CHANNEL_ID
+                                )
+                            }
+
                             CentralLog.d(TAG, "Failed to upload data: ${e.message}")
                             if (!isDetached) {
                                 turnOffLoadingProgress()
@@ -167,7 +171,7 @@ class EnterPinFragment : Fragment() {
                         crashlytics.setCustomKey("uid", "$uid")
                         if (!isDetached) {
                             turnOffLoadingProgress()
-                            enterPinFragmentErrorMessage.visibility = View.VISIBLE
+                            enterPinFragmentErrorMessage?.visibility = View.VISIBLE
                         }
                     }
                 }

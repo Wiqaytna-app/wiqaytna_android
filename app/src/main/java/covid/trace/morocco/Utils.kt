@@ -44,8 +44,8 @@ object Utils {
 
     private const val TAG = "Utils"
 
-    const val faqArURL = "https://www.wiqaytna.ma/Arabe.aspx#nav-wiqaytna"
-    const val faqFrURL = "https://www.wiqaytna.ma/#nav-wiqaytna"
+    const val faqArURL = "https://www.wiqaytna.ma/Default.aspx#nav-wiqaytna"
+    const val faqFrURL = "https://www.wiqaytna.ma/Default_Fr.aspx#nav-wiqaytna"
 
     fun getRequiredPermissions(): Array<String> {
         return arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -329,6 +329,7 @@ object Utils {
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id)
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, description)
+        CentralLog.d("FirebaseAnalyticsEvent", eventName)
         firebaseAnalytics.logEvent(eventName, bundle)
     }
 

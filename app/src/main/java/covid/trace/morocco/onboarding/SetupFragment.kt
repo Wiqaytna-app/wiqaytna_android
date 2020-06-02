@@ -32,16 +32,20 @@ class SetupFragment : OnboardingFragmentInterface() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        Utils.firebaseAnalyticsEvent(requireContext(), "setup_screen", "4", "Onboarding fourth screen")
+        context?.let {
+            Utils.firebaseAnalyticsEvent(it, "setup_screen", "4", "Onboarding fourth screen")
+        }
 
         language.setOnClickListener {
-            Utils.firebaseAnalyticsEvent(
-                requireContext(),
-                "setup_screen_change_language",
-                "22",
-                "Onboarding fourth screen"
-            )
+            context?.let {
+                Utils.firebaseAnalyticsEvent(
+                    it,
+                    "setup_screen_change_language",
+                    "22",
+                    "Onboarding fourth screen"
+                )
+            }
+
             LocaleHelper.getInstance().switchLocale()
             requireActivity().recreate()
         }
