@@ -31,7 +31,7 @@ class WiqaytnaApp : Application() {
 
     override fun attachBaseContext(base: Context?) {
         LocaleHelper.init(base)
-        super.attachBaseContext(LocaleHelper.getInstance().setLocale(base))
+        super.attachBaseContext(LocaleHelper.setLocale(base))
     }
 
     companion object {

@@ -124,7 +124,7 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
                 "20",
                 "Onboarding second screen"
             )
-            LocaleHelper.getInstance().switchLocale()
+            LocaleHelper.switchLocale()
             requireActivity().recreate()
         }
     }

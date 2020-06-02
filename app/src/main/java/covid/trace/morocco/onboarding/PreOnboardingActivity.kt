@@ -21,7 +21,7 @@ class PreOnboardingActivity : BaseFragmentActivity() {
 
         language.setOnClickListener {
             Utils.firebaseAnalyticsEvent(baseContext, "first_screen_change_language", "19", "Onboarding third screen resend otp")
-            LocaleHelper.getInstance().switchLocale()
+            LocaleHelper.switchLocale()
             recreate()
         }
 
