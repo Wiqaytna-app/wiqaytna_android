@@ -10,14 +10,22 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import covid.trace.morocco.*
 import covid.trace.morocco.logging.CentralLog
+import covid.trace.morocco.models.Region
 import covid.trace.morocco.models.StatisticsResponse
 import covid.trace.morocco.onboarding.PersonalInfosActivity
 import kotlinx.android.synthetic.main.fragment_statistics.*
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class StatisticsFragment : Fragment() {
+
+    private var format: NumberFormat? = null
+
+    init {
+        format = NumberFormat.getInstance(Locale.FRANCE)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +53,7 @@ class StatisticsFragment : Fragment() {
     private fun initViews(statistics: StatisticsResponse) {
         if (statistics != null) {
             val data = statistics.data
+            val regions: Array<Region>? = data.regions
             healing_all.text = data.covered
             deaths_all.text = data.death
             confirmed_cases_all.text = data.confirmed
@@ -53,7 +62,8 @@ class StatisticsFragment : Fragment() {
             deaths.text = data.new_death
             confirmed_cases.text = data.new_confirmed
 
-            val adapter = RegionsAdapter(data.regions)
+            regions?.sortByDescending { format?.parse(it.total)?.toDouble() }
+            val adapter = regions?.let{RegionsAdapter(it)}
             regionsList.adapter = adapter
             regionsList.layoutManager = LinearLayoutManager(context)
 
