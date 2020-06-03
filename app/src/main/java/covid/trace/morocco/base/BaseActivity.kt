@@ -11,14 +11,14 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper
 open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        LocaleHelper.getInstance().setLocale(this)
+        LocaleHelper.setLocale(this)
         super.onCreate(savedInstanceState)
     }
 
     override fun attachBaseContext(newBase: Context?) {
         super.attachBaseContext(
             ViewPumpContextWrapper.wrap(
-                LocaleHelper.getInstance().setLocale(newBase)
+                LocaleHelper.setLocale(newBase)!!
             )
         )
     }

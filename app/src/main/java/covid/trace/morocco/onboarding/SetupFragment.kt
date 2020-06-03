@@ -42,7 +42,7 @@ class SetupFragment : OnboardingFragmentInterface() {
                 "22",
                 "Onboarding fourth screen"
             )
-            LocaleHelper.getInstance().switchLocale()
+            LocaleHelper.switchLocale()
             requireActivity().recreate()
         }
     }

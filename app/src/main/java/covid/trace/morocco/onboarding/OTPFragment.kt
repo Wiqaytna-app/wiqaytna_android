@@ -101,7 +101,7 @@ class OTPFragment : OnboardingFragmentInterface() {
                 "21",
                 "Onboarding third screen"
             )
-            LocaleHelper.getInstance().switchLocale()
+            LocaleHelper.switchLocale()
             requireActivity().recreate()
         }
 

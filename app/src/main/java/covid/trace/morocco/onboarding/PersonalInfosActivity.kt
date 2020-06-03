@@ -315,7 +315,7 @@ class PersonalInfosActivity : BaseFragmentActivity(), Utils.OnRegionSelected, Ut
 
     private fun onLanguagePicked(lang: String) {
         PreferencesHelper.setLanguage(lang)
-        if (LocaleHelper.getInstance().setLocaleIfNeeded(lang)) {
+        if (LocaleHelper.setLocaleIfNeeded(lang)) {
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
