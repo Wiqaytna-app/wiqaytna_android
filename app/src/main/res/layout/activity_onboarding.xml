@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".onboarding.OnboardingActivity">
 
-    <covid.trace.morocco.view.CustomViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    <covid.trace.morocco.view.CustomViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

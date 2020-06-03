@@ -22,7 +22,9 @@ class UploadCompleteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Utils.firebaseAnalyticsEvent(requireContext(), "upload_succeeded", "12", "upload succeeded")
+        context?.let{
+            Utils.firebaseAnalyticsEvent(it, "upload_succeeded", "12", "upload succeeded")
+        }
 
         uploadCompleteFragmentActionButton.setOnClickListener {
             goBackToHome()

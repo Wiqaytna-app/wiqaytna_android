@@ -17,12 +17,15 @@ class AdvicesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_advices, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Utils.firebaseAnalyticsEvent(requireContext(), "advices_screen", "9", "advices screen")
+        context?.let {
+            Utils.firebaseAnalyticsEvent(it, "advices_screen", "9", "advices screen")
+        }
         setClickListeners()
     }
 

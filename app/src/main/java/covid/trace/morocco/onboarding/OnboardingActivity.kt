@@ -17,21 +17,20 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.tasks.Task
-import com.google.firebase.FirebaseException
-import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.auth.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.functions.HttpsCallableResult
 import covid.trace.morocco.*
-import covid.trace.morocco.R
 import covid.trace.morocco.WiqaytnaApp.Companion.firebaseToken
 import covid.trace.morocco.WiqaytnaApp.Companion.uid
 import covid.trace.morocco.base.BaseFragmentActivity
@@ -42,7 +41,6 @@ import kotlinx.android.synthetic.main.activity_onboarding.*
 import kotlinx.android.synthetic.main.fragment_otp_new.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
-import kotlin.properties.Delegates
 
 private const val REQUEST_ENABLE_BT = 123
 private const val PERMISSION_REQUEST_ACCESS_LOCATION = 456
@@ -61,111 +59,12 @@ class OnboardingActivity : BaseFragmentActivity(),
     private var crashlytics = FirebaseCrashlytics.getInstance()
 
     private var TAG: String = "OnboardingActivity"
-    private var pagerAdapter: ScreenSlidePagerAdapter? = null
+    private lateinit var pagerAdapter: ScreenSlidePagerAdapter
     private var bleSupported = false
     private var speedUp = false
     private var resendingCode = false
 
     private val functions = FirebaseFunctions.getInstance(BuildConfig.FIREBASE_REGION)
-    private var credential: PhoneAuthCredential by Delegates.notNull()
-    private var verificationId: String by Delegates.notNull()
-    private var resendToken: PhoneAuthProvider.ForceResendingToken by Delegates.notNull()
-    private val phoneNumberVerificationCallbacks =
-        object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-            override fun onVerificationCompleted(receivedCredential: PhoneAuthCredential) {
-                // This callback will be invoked in two situations:
-                // 1 - Instant verification. In some cases the phone number can be instantly
-                //     verified without needing to send or enter a verification code.
-                // 2 - Auto-retrieval. On some devices Google Play services can automatically
-                //     detect the incoming verification SMS and perform verification without
-                //     user action.
-                CentralLog.d(TAG, "onVerificationCompleted: $receivedCredential")
-                credential = receivedCredential
-                signInWithPhoneAuthCredential(credential)
-                speedUp = true
-            }
-
-            override fun onVerificationFailed(e: FirebaseException) {
-                if (e is FirebaseAuthInvalidCredentialsException) {
-                    CentralLog.d(TAG, "FirebaseAuthInvalidCredentialsException", e)
-//                    alertDialog(getString(R.string.verification_failed))
-                    updatePhoneNumberError(getString(R.string.invalid_number))
-
-                } else if (e is FirebaseTooManyRequestsException) {
-                    CentralLog.d(TAG, "FirebaseTooManyRequestsException", e)
-                    alertDialog(getString(R.string.too_many_requests))
-                }
-
-                enableFragmentbutton()
-
-                CentralLog.d(TAG, "On Verification failure: ${e.message}")
-                onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
-            }
-
-            override fun onCodeSent(
-                receivedVerificationId: String,
-                token: PhoneAuthProvider.ForceResendingToken
-            ) {
-                // The SMS verification code has been sent to the provided phone number, we
-                // now need to ask the user to enter the code and then construct a credential
-                // by combining the code with a verification ID.
-
-                verificationId = receivedVerificationId
-                resendToken = token
-
-                CentralLog.d(TAG, "onCodeSent: $receivedVerificationId")
-                if (resendingCode) {
-                    onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
-                } else {
-                    navigateToNextPage()
-                }
-            }
-        }
-
-    private fun enableFragmentbutton() {
-        val interfaceObject: OnboardingFragmentInterface? = pagerAdapter?.getItem(pager.currentItem)
-        interfaceObject?.enableButton()
-    }
-
-    private fun alertDialog(desc: String?) {
-        val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setMessage(desc)
-            .setCancelable(false)
-            .setPositiveButton(
-                getString(R.string.ok)
-            ) { dialog, _ ->
-                dialog.dismiss()
-            }.show()
-    }
-
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        FirebaseAuth.getInstance().signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    CentralLog.d(TAG, "signInWithCredential:success")
-
-                    if (BluetoothMonitoringService.broadcastMessage == null || TempIDManager.needToUpdate(
-                            applicationContext
-                        )
-                    ) {
-                        getTemporaryID()
-                    }
-                } else {
-                    // Sign in failed, display a message and update the UI
-                    CentralLog.d(TAG, "signInWithCredential:failure", task.exception)
-                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        // The verification code entered was invalid
-                        onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
-                        updateOTPError(getString(R.string.invalid_otp))
-                    } else if (task.exception is FirebaseAuthInvalidUserException) {
-                        alertDialog(getString(R.string.invalid_user))
-                    }
-                    onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
-                }
-            }
-    }
 
     private fun getTemporaryID(): Task<HttpsCallableResult> {
         return TempIDManager.getTemporaryIDs(this, functions)
@@ -241,7 +140,7 @@ class OnboardingActivity : BaseFragmentActivity(),
             override fun onPageSelected(position: Int) {
                 CentralLog.d(TAG, "position: $position")
                 val onboardingFragment: OnboardingFragmentInterface =
-                    pagerAdapter!!.getItem(position)
+                    pagerAdapter.getItem(position)
                 onboardingFragment.becomesVisible()
                 when (position) {
                     0 -> {
@@ -302,7 +201,7 @@ class OnboardingActivity : BaseFragmentActivity(),
         // come back to OTP from Setup
         if (pager.currentItem == 3) {
             pager.currentItem = pager.currentItem - 2
-            pagerAdapter!!.notifyDataSetChanged()
+            pagerAdapter.notifyDataSetChanged()
             return
         }
 
@@ -431,7 +330,11 @@ class OnboardingActivity : BaseFragmentActivity(),
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_CANCELED) {
                 CentralLog.d(TAG, "request to enable bluetooth canceled")
-                Toast.makeText(baseContext, resources.getString(R.string.setup_app_permission),Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    baseContext,
+                    resources.getString(R.string.setup_app_permission),
+                    Toast.LENGTH_LONG
+                ).show()
                 return
             } else {
                 setupPermissionsAndSettings()
@@ -503,38 +406,38 @@ class OnboardingActivity : BaseFragmentActivity(),
         }
     }
 
-    fun navigateToNextPage() {
+    private fun navigateToNextPage() {
         CentralLog.d(TAG, "Navigating to next page")
         onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
         if (!speedUp) {
             pager.currentItem = pager.currentItem + 1
-            pagerAdapter!!.notifyDataSetChanged()
+            pagerAdapter.notifyDataSetChanged()
         } else {
             pager.currentItem = pager.currentItem + 2
-            pagerAdapter!!.notifyDataSetChanged()
+            pagerAdapter.notifyDataSetChanged()
             speedUp = false
         }
     }
 
-    fun navigateToPreviousPage() {
+    private fun navigateToPreviousPage() {
         CentralLog.d(TAG, "Navigating to previous page")
         if (mIsResetup) {
             if (pager.currentItem >= 4) {
                 pager.currentItem = pager.currentItem - 1
-                pagerAdapter!!.notifyDataSetChanged()
+                pagerAdapter.notifyDataSetChanged()
             } else {
                 finish()
             }
         } else {
             pager.currentItem = pager.currentItem - 1
-            pagerAdapter!!.notifyDataSetChanged()
+            pagerAdapter.notifyDataSetChanged()
         }
     }
 
     private fun navigateTo(page: Int) {
         CentralLog.d(TAG, "Navigating to page")
         pager.currentItem = page
-        pagerAdapter!!.notifyDataSetChanged()
+        pagerAdapter.notifyDataSetChanged()
     }
 
     fun requestForOTP(phoneNumber: String) {
@@ -570,7 +473,7 @@ class OnboardingActivity : BaseFragmentActivity(),
                     // If sign in fails, display a message to the user.
                     onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
                     CentralLog.w("signInAnonymously:failure", task.exception.toString())
-                    task.exception?.let{
+                    task.exception?.let {
                         crashlytics.recordException(it)
                         crashlytics.setCustomKey("error", "signInAnonymously failed")
                     }
@@ -683,17 +586,12 @@ class OnboardingActivity : BaseFragmentActivity(),
     }
 
     fun updatePhoneNumber(num: String) {
-        val onboardingFragment: OnboardingFragmentInterface = pagerAdapter!!.getItem(1)
+        val onboardingFragment: OnboardingFragmentInterface = pagerAdapter.getItem(1)
         onboardingFragment.onUpdatePhoneNumber(num)
     }
 
-    fun updatePhoneNumberError(error: String) {
-        val registerNumberFragment: OnboardingFragmentInterface = pagerAdapter!!.getItem(0)
-        registerNumberFragment.onError(error)
-    }
-
     private fun updateOTPError(error: String) {
-        val onboardingFragment: OnboardingFragmentInterface = pagerAdapter!!.getItem(1)
+        val onboardingFragment: OnboardingFragmentInterface = pagerAdapter.getItem(1)
         onboardingFragment.onError(error)
     }
 
@@ -702,29 +600,35 @@ class OnboardingActivity : BaseFragmentActivity(),
     }
 
     private inner class ScreenSlidePagerAdapter(fm: FragmentManager) :
-        FragmentStatePagerAdapter(fm) {
+        FragmentStatePagerAdapter(
+            fm,
+            BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+        ) {
 
         val fragmentMap: MutableMap<Int, OnboardingFragmentInterface> = HashMap()
 
         override fun getCount(): Int = 5
 
         override fun getItem(position: Int): OnboardingFragmentInterface {
-            return fragmentMap.getOrPut(position, { createFragAtIndex(position) })
+            return fragmentMap.getOrPut(position) { createFragAtIndex(position) }
+        }
+
+        override fun instantiateItem(container: ViewGroup, position: Int): Any {
+            val fragment = super.instantiateItem(container, position) as OnboardingFragmentInterface
+            fragmentMap[position] = fragment
+            return fragment
         }
 
         private fun createFragAtIndex(index: Int): OnboardingFragmentInterface {
             return when (index) {
                 0 -> return RegisterNumberFragment()
                 1 -> return OTPFragment()
-//                2 -> return TOUFragment()
                 3 -> return SetupFragment()
-//                4 -> return SetupCompleteFragment()
                 else -> {
                     RegisterNumberFragment()
                 }
             }
         }
-
     }
 
 }

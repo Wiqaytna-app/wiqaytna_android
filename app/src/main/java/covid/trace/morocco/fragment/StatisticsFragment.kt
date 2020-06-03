@@ -29,7 +29,14 @@ class StatisticsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Utils.firebaseAnalyticsEvent(requireContext(), "statistics_screen", "8", "statistics screen")
+        context?.let {
+            Utils.firebaseAnalyticsEvent(
+                it,
+                "statistics_screen",
+                "8",
+                "statistics screen"
+            )
+        }
         setClickListener()
         if (WiqaytnaApp.statisticsData != null) {
             initViews(WiqaytnaApp.statisticsData!!)

@@ -72,8 +72,9 @@ class HomeFragment : Fragment() {
 
         faq.setOnClickListener {
 
-            Utils.firebaseAnalyticsEvent(requireContext(), "open_faq", "13", "open faq")
-
+            context?.let{
+                Utils.firebaseAnalyticsEvent(it, "open_faq", "13", "open faq")
+            }
 
             val url = if (TextUtils.equals(
                     PreferencesHelper.getCurrentLanguage(),
@@ -190,14 +191,18 @@ class HomeFragment : Fragment() {
         view_setup.isVisible = isShowRestartSetup()
         view_complete.isVisible = !isShowRestartSetup()
         if (view_setup.isVisible) {
-            Utils.firebaseAnalyticsEvent(
-                requireContext(),
-                "home_screen_setup_incomplete",
-                "7",
-                "home screen setup incomplete"
-            )
+            context?.let{
+                Utils.firebaseAnalyticsEvent(
+                    it,
+                    "home_screen_setup_incomplete",
+                    "7",
+                    "home screen setup incomplete"
+                )
+            }
         } else {
-            Utils.firebaseAnalyticsEvent(requireContext(), "home_screen", "6", "home screen")
+            context?.let {
+                Utils.firebaseAnalyticsEvent(it, "home_screen", "6", "home screen")
+            }
         }
     }
 
@@ -280,12 +285,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun shareThisApp() {
-        Utils.firebaseAnalyticsEvent(
-            requireContext(),
-            FirebaseAnalytics.Event.SHARE,
-            "14",
-            "share the app"
-        )
+        context?.let {
+            Utils.firebaseAnalyticsEvent(
+                it,
+                FirebaseAnalytics.Event.SHARE,
+                "14",
+                "share the app"
+            )
+        }
         var newIntent = Intent(Intent.ACTION_SEND)
         newIntent.type = "text/plain"
         newIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))

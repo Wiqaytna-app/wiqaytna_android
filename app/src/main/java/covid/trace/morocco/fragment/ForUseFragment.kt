@@ -24,8 +24,9 @@ class ForUseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Utils.firebaseAnalyticsEvent(requireContext(), "upload_screen_1", "10", "upload screen")
-
+        context?.let {
+            Utils.firebaseAnalyticsEvent(it, "upload_screen_1", "10", "upload screen")
+        }
 
         forUseFragmentActionButton.setOnClickListener {
             goToUploadFragment()
