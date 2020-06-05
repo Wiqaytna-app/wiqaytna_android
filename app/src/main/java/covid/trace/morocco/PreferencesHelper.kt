@@ -29,18 +29,18 @@ object PreferencesHelper {
     fun getCurrentLanguage(): String =
         getStringPreference(LANGUAGE_KEY, ARABIC_LANGUAGE_CODE)
 
-    fun setPreference(key: String?, value: String?) {
+    fun setPreference(key: String, value: String?) {
         mPreference?.put(key, value)
     }
 
-    fun setPreference(key: String?, value: Boolean?) {
+    fun setPreference(key: String, value: Boolean?) {
         mPreference?.put(key, value)
     }
 
-    fun getStringPreference(key: String?, defValue: String?): String =
+    fun getStringPreference(key: String, defValue: String?): String =
         mPreference?.get(key, defValue) as String
 
-    fun getBooleanPreference(key: String?, defValue: Boolean): Boolean =
+    fun getBooleanPreference(key: String, defValue: Boolean): Boolean =
         mPreference?.get(key, defValue) as Boolean
 
 }

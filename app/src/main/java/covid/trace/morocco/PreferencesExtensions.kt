@@ -3,7 +3,7 @@ package covid.trace.morocco
 import android.content.SharedPreferences
 import androidx.core.content.edit
 
-inline fun <reified T> SharedPreferences.get(key: String?, defaultValue: T): T {
+inline fun <reified T> SharedPreferences.get(key: String, defaultValue: T): T {
     when (T::class) {
         Boolean::class -> return this.getBoolean(key, defaultValue as Boolean) as T
         Float::class -> return this.getFloat(key, defaultValue as Float) as T
@@ -15,7 +15,7 @@ inline fun <reified T> SharedPreferences.get(key: String?, defaultValue: T): T {
     return defaultValue
 }
 
-inline fun <reified T> SharedPreferences.put(key: String?, value: T) {
+inline fun <reified T> SharedPreferences.put(key: String, value: T) {
     edit {
         when (T::class) {
             Boolean::class -> putBoolean(key, value as Boolean)
