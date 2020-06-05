@@ -24,8 +24,8 @@ object LocaleHelper {
     private var sharedPreferences: SharedPreferences? = null
     var currentLocale: String? = null
 
-    fun init(context: Context?) {
-        sharedPreferences = context?.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+    fun init(context: Context) {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
         currentLocale =  sharedPreferences?.get(PreferencesHelper.LANGUAGE_KEY, ARABIC)
     }
 
