@@ -34,7 +34,7 @@ android {
     defaultConfig {
         applicationId "covid.trace.morocco"
         resValue "string", "build_config_package", "covid.trace.morocco"
-        minSdkVersion 21
+        minSdkVersion 22
         targetSdkVersion 28
         versionCode 70
         versionName "1.0.70"
