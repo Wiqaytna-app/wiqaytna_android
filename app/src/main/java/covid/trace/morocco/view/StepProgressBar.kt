@@ -21,8 +21,8 @@ class StepProgressBar(
         private const val OUT_OF_BOUNDS_ERROR = "Progress bar out of bounds!"
     }
 
-    private var inactiveDrawable: Drawable? = null
-    private var activeDrawable: Drawable? = null
+    private var inactiveDrawable: Drawable
+    private var activeDrawable: Drawable
     private var dashSpacing = 0f
     private var maxNumDashes = 0
     private var currentlyActiveDash = 0
@@ -53,34 +53,34 @@ class StepProgressBar(
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val height = activeDrawable!!.intrinsicHeight + paddingBottom + paddingTop
+        val height = activeDrawable.intrinsicHeight + paddingBottom + paddingTop
         setMeasuredDimension(widthMeasureSpec, height)
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         // Centering the dots in the middle of the canvas
-        val singleDotSize = dashSpacing + activeDrawable!!.intrinsicWidth
+        val singleDotSize = dashSpacing + activeDrawable.intrinsicWidth
         val combinedDotSize = singleDotSize * maxNumDashes - dashSpacing
         val startingX = ((width - combinedDotSize) / 2).toInt()
         for (i in 0 until maxNumDashes) {
             val x = (startingX + i * singleDotSize).toInt()
             if (cumulativeDashes && i < currentlyActiveDash || i == currentlyActiveDash) {
-                activeDrawable!!.setBounds(
+                activeDrawable.setBounds(
                     x,
                     0,
-                    x + activeDrawable!!.intrinsicWidth,
-                    activeDrawable!!.intrinsicHeight
+                    x + activeDrawable.intrinsicWidth,
+                    activeDrawable.intrinsicHeight
                 )
-                activeDrawable!!.draw(canvas)
+                activeDrawable.draw(canvas)
             } else {
-                inactiveDrawable!!.setBounds(
+                inactiveDrawable.setBounds(
                     x,
                     0,
-                    x + inactiveDrawable!!.intrinsicWidth,
-                    inactiveDrawable!!.intrinsicHeight
+                    x + inactiveDrawable.intrinsicWidth,
+                    inactiveDrawable.intrinsicHeight
                 )
-                inactiveDrawable!!.draw(canvas)
+                inactiveDrawable.draw(canvas)
             }
         }
     }
