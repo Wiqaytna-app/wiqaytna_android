@@ -60,7 +60,7 @@ android.enableJetifier=true
 ---
 
 ### Build Configurations in build.gradle
-Change the package name and other configurations accordingly such as the `resValue` in  in the different settings in `buildTypes`
+Change the package name and other configurations accordingly such as the `resValue` in the different settings in `buildTypes`
 For example,
 ```groovy
 buildTypes {
