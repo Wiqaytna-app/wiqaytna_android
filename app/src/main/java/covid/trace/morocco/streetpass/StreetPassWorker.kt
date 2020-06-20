@@ -487,6 +487,18 @@ class StreetPassWorker(val context: Context) {
                         val characteristic = service.getCharacteristic(characteristicV2)
 
                         if (characteristic != null) {
+
+                            // Thanks to the Australian team of COVIDSafe as well as to the research team
+                            // which discovered CVE-2020-12856 for the implementation of the fix.
+                            // Among them, special thanks to
+                            // Alwen Tiu (Australian National University) the discoverer of the issue
+                            // and Jim Mussared (George Robotics) for alerting us
+                            // and showing our team how to implement the fix.
+
+                            // Attempt to prevent bonding should the StreetPass characteristic
+                            // require authentication or encryption
+
+                            StreetPassPairingFix.bypassAuthenticationRetry(gatt)
                             val readSuccess = gatt.readCharacteristic(characteristic)
                             CentralLog.i(
                                 TAG,
@@ -594,6 +606,18 @@ class StreetPassWorker(val context: Context) {
                         work.connectable.transmissionPower
                     )
                     characteristic.value = writedata
+
+                    // Thanks to the Australian team of COVIDSafe as well as to the research team
+                    // which discovered CVE-2020-12856 for the implementation of the fix.
+                    // Among them, special thanks to
+                    // Alwen Tiu (Australian National University) the discoverer of the issue
+                    // and Jim Mussared (George Robotics) for alerting us
+                    // and showing our team how to implement the fix.
+
+                    // Attempt to prevent bonding should the StreetPass characteristic
+                    // require authentication or encryption
+
+                    StreetPassPairingFix.bypassAuthenticationRetry(gatt)
                     val writeSuccess = gatt.writeCharacteristic(characteristic)
                     CentralLog.i(
                         TAG,
