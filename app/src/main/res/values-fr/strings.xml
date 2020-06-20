@@ -153,4 +153,7 @@
     <string name="advice_title">Respectez les conseils suivants pour vous protéger et protéger vos proches</string>
     <string name="notif_storage_problem">Accès stockage impossible</string>
     <string name="notif_storage_problem_sub">Merci de vérifier votre espace de stockage</string>
+    <string name="install_navigator">Veuillez installer un navigateur internet</string>
+    <string name="later">Plutard</string>
+    <string name="open">Consulter</string>
 </resources>

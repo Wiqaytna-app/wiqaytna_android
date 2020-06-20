@@ -18,6 +18,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.functions.FirebaseFunctions
 import covid.trace.morocco.BuildConfig
 import covid.trace.morocco.Preference
@@ -54,6 +55,7 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
     private var mNotificationManager: NotificationManager? = null
 
     private lateinit var serviceUUID: String
+    private val crashlytics = FirebaseCrashlytics.getInstance()
 
     private var streetPassServer: StreetPassServer? = null
     private var streetPassScanner: StreetPassScanner? = null
@@ -135,7 +137,7 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
             val name = CHANNEL_SERVICE
             // Create the channel for the notification
             val mChannel =
-                NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW)
+                    NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW)
             mChannel.enableLights(false)
             mChannel.enableVibration(true)
             mChannel.vibrationPattern = longArrayOf(0L)
@@ -150,7 +152,7 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
     private fun notifyLackingThings(override: Boolean = false) {
         if (notificationShown != NOTIFICATION_STATE.LACKING_THINGS || override) {
             var notif =
-                NotificationTemplates.lackingThingsNotification(this.applicationContext, CHANNEL_ID)
+                    NotificationTemplates.lackingThingsNotification(this.applicationContext, CHANNEL_ID)
             startForeground(NOTIFICATION_ID, notif)
             notificationShown = NOTIFICATION_STATE.LACKING_THINGS
         }
@@ -159,7 +161,7 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
     private fun notifyRunning(override: Boolean = false) {
         if (notificationShown != NOTIFICATION_STATE.RUNNING || override) {
             var notif =
-                NotificationTemplates.getRunningNotification(this.applicationContext, CHANNEL_ID)
+                    NotificationTemplates.getRunningNotification(this.applicationContext, CHANNEL_ID)
             startForeground(NOTIFICATION_ID, notif)
             notificationShown = NOTIFICATION_STATE.RUNNING
         }
@@ -200,8 +202,8 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
         //check for permissions
         if (!hasLocationPermissions() || !isBluetoothEnabled()) {
             CentralLog.i(
-                TAG,
-                "location permission: ${hasLocationPermissions()} bluetooth: ${isBluetoothEnabled()}"
+                    TAG,
+                    "location permission: ${hasLocationPermissions()} bluetooth: ${isBluetoothEnabled()}"
             )
             notifyLackingThings()
             return START_STICKY
@@ -244,8 +246,8 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
         //check for permissions
         if (!hasLocationPermissions() || !isBluetoothEnabled()) {
             CentralLog.i(
-                TAG,
-                "location permission: ${hasLocationPermissions()} bluetooth: ${isBluetoothEnabled()}"
+                    TAG,
+                    "location permission: ${hasLocationPermissions()} bluetooth: ${isBluetoothEnabled()}"
             )
             notifyLackingThings()
             return
@@ -334,15 +336,32 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
         CentralLog.d(TAG, "Action Start")
 
         TempIDManager.getTemporaryIDs(this, functions)
-            .addOnCompleteListener {
-                CentralLog.d(TAG, "Get TemporaryIDs completed")
-                //this will run whether it starts or fails.
-                var fetch = TempIDManager.retrieveTemporaryID(this.applicationContext)
-                fetch?.let {
-                    broadcastMessage = it
-                    setupCycles()
+                .addOnCompleteListener {
+                    CentralLog.d(TAG, "Get TemporaryIDs completed")
+                    //this will run whether it starts or fails.
+                    Utils.firebaseAnalyticsEvent(
+                            this,
+                            "getTempID_Successful_action_start",
+                            "30",
+                            "getTempID successful action start"
+                    );
+                    var fetch = TempIDManager.retrieveTemporaryID(this.applicationContext)
+                    fetch?.let {
+                        broadcastMessage = it
+                        setupCycles()
+                    }
                 }
-            }
+                .addOnFailureListener { exception ->
+                    crashlytics.recordException(exception)
+                    crashlytics.setCustomKey("error", "couldn't get temporary IDs")
+                    crashlytics.setCustomKey("method", "action start")
+                    Utils.firebaseAnalyticsEvent(
+                            this,
+                            "getTempID_Failed_action_start",
+                            "34",
+                            "getTempID failed action start"
+                    )
+                }
     }
 
     fun actionUpdateBm() {
@@ -351,18 +370,37 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
             CentralLog.i(TAG, "[TempID] Need to update TemporaryID in actionUpdateBM")
             //need to pull new BM
             TempIDManager.getTemporaryIDs(this, functions)
-                .addOnCompleteListener {
-                    //this will run whether it starts or fails.
-                    var fetch = TempIDManager.retrieveTemporaryID(this.applicationContext)
-                    fetch?.let {
-                        CentralLog.i(TAG, "[TempID] Updated Temp ID")
-                        broadcastMessage = it
-                    }
+                    .addOnCompleteListener {
+                        //this will run whether it starts or fails.
 
-                    if (fetch == null) {
-                        CentralLog.e(TAG, "[TempID] Failed to fetch new Temp ID")
+                        Utils.firebaseAnalyticsEvent(
+                                this.applicationContext,
+                                "getTempID_Successful_action_update_BM",
+                                "31",
+                                "getTempID successful action update BM"
+                        );
+
+                        var fetch = TempIDManager.retrieveTemporaryID(this.applicationContext)
+                        fetch?.let {
+                            CentralLog.i(TAG, "[TempID] Updated Temp ID")
+                            broadcastMessage = it
+                        }
+
+                        if (fetch == null) {
+                            CentralLog.e(TAG, "[TempID] Failed to fetch new Temp ID")
+                        }
                     }
-                }
+                    .addOnFailureListener { exception ->
+                        crashlytics.recordException(exception)
+                        crashlytics.setCustomKey("error", "couldn't get temporary IDs")
+                        crashlytics.setCustomKey("method", "action update BM")
+                        Utils.firebaseAnalyticsEvent(
+                                this,
+                                "getTempID_Failed_action_update_BM",
+                                "35",
+                                "getTempID failed action update BM"
+                        )
+                    }
         } else {
             CentralLog.i(TAG, "[TempID] Don't need to update Temp ID in actionUpdateBM")
         }
@@ -378,14 +416,33 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
             CentralLog.i(TAG, "[TempID] Need to update TemporaryID in actionScan")
             //need to pull new BM
             TempIDManager.getTemporaryIDs(this.applicationContext, functions)
-                .addOnCompleteListener {
-                    //this will run whether it starts or fails.
-                    var fetch = TempIDManager.retrieveTemporaryID(this.applicationContext)
-                    fetch?.let {
-                        broadcastMessage = it
-                        performScan()
+                    .addOnCompleteListener {
+                        //this will run whether it starts or fails.
+
+                        Utils.firebaseAnalyticsEvent(
+                                this.applicationContext,
+                                "getTempID_Successful_action_scan",
+                                "32",
+                                "getTempID successful action scan"
+                        );
+
+                        var fetch = TempIDManager.retrieveTemporaryID(this.applicationContext)
+                        fetch?.let {
+                            broadcastMessage = it
+                            performScan()
+                        }
                     }
-                }
+                    .addOnFailureListener { exception ->
+                        crashlytics.recordException(exception)
+                        crashlytics.setCustomKey("error", "couldn't get temporary IDs")
+                        crashlytics.setCustomKey("method", "action scan")
+                        Utils.firebaseAnalyticsEvent(
+                                this,
+                                "getTempID_Failed_action_scan",
+                                "36",
+                                "getTempID failed action scan"
+                        )
+                    }
         } else {
             CentralLog.i(TAG, "[TempID] Don't need to update Temp ID in actionScan")
             performScan()
@@ -403,16 +460,16 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
 
     private fun setupService() {
         streetPassServer =
-            streetPassServer ?: StreetPassServer(this.applicationContext, serviceUUID)
+                streetPassServer ?: StreetPassServer(this.applicationContext, serviceUUID)
         setupScanner()
         setupAdvertiser()
     }
 
     private fun setupScanner() {
         streetPassScanner = streetPassScanner ?: StreetPassScanner(
-            this,
-            serviceUUID,
-            scanDuration
+                this,
+                serviceUUID,
+                scanDuration
         )
     }
 
@@ -441,10 +498,10 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
     private fun scheduleScan() {
         if (!infiniteScanning) {
             commandHandler.scheduleNextScan(
-                scanDuration + calcPhaseShift(
-                    minScanInterval,
-                    maxScanInterval
-                )
+                    scanDuration + calcPhaseShift(
+                            minScanInterval,
+                            maxScanInterval
+                    )
             )
         }
     }
@@ -480,8 +537,8 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
             val bundle = Bundle()
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Android")
             bundle.putString(
-                FirebaseAnalytics.Param.ITEM_NAME,
-                "Have not login yet but in main activity"
+                    FirebaseAnalytics.Param.ITEM_NAME,
+                    "Have not login yet but in main activity"
             )
             firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
         }
@@ -520,9 +577,9 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
                 commandHandler.scheduleNextAdvertise(100)
             } else {
                 CentralLog.w(
-                    TAG,
-                    "Advertise Schedule present. Should be advertising?:  ${advertiser?.shouldBeAdvertising
-                        ?: false}. Is Advertising?: ${advertiser?.isAdvertising ?: false}"
+                        TAG,
+                        "Advertise Schedule present. Should be advertising?:  ${advertiser?.shouldBeAdvertising
+                                ?: false}. Is Advertising?: ${advertiser?.isAdvertising ?: false}"
                 )
             }
         } else {
@@ -638,26 +695,26 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
             if (ACTION_RECEIVED_STREETPASS == intent.action) {
                 var connRecord: ConnectionRecord = intent.getParcelableExtra(STREET_PASS)
                 CentralLog.d(
-                    TAG,
-                    "StreetPass received: $connRecord"
+                        TAG,
+                        "StreetPass received: $connRecord"
                 )
 
                 if (connRecord.msg.isNotEmpty()) {
                     //Toast.makeText(TracerApp.AppContext, connRecord.msg, Toast.LENGTH_SHORT).show();
                     val record = StreetPassRecord(
-                        v = connRecord.version,
-                        msg = connRecord.msg,
-                        org = connRecord.org,
-                        modelP = connRecord.peripheral.modelP,
-                        modelC = connRecord.central.modelC,
-                        rssi = connRecord.rssi,
-                        txPower = connRecord.txPower
+                            v = connRecord.version,
+                            msg = connRecord.msg,
+                            org = connRecord.org,
+                            modelP = connRecord.peripheral.modelP,
+                            modelC = connRecord.central.modelC,
+                            rssi = connRecord.rssi,
+                            txPower = connRecord.txPower
                     )
 
                     launch {
                         CentralLog.d(
-                            TAG,
-                            "Coroutine - Saving StreetPassRecord: ${Utils.getDate(record.timestamp)}"
+                                TAG,
+                                "Coroutine - Saving StreetPassRecord: ${Utils.getDate(record.timestamp)}"
                         )
                         streetPassRecordStorage.saveRecord(record)
                     }

@@ -158,4 +158,7 @@
     <string name="advice_title">المرجو اتباع النصائح التالية</string>
     <string name="notif_storage_problem">الوصول إلى التخزين غير ممكن</string>
     <string name="notif_storage_problem_sub">يرجى التحقق من مساحة التخزين الخاصة بك</string>
+    <string name="install_navigator">المرجو تثبيت متصفح للأنترنت</string>
+    <string name="later">لاحقا</string>
+    <string name="open">تصفح</string>
 </resources>

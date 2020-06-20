@@ -6,15 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import covid.trace.morocco.MainActivity
+import covid.trace.morocco.PreferencesHelper
 import covid.trace.morocco.R
 import covid.trace.morocco.Utils
 import kotlinx.android.synthetic.main.fragment_upload_uploadcomplete.*
 
 class UploadCompleteFragment : Fragment() {
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_upload_uploadcomplete, container, false)
     }
@@ -33,6 +34,7 @@ class UploadCompleteFragment : Fragment() {
 
     private fun goBackToHome() {
         var parentActivity = activity as MainActivity
-        parentActivity.goToHome()
+        PreferencesHelper.setPreference("selected", R.id.navigation_home.toString())
+        parentActivity.goToSelectedItem()
     }
 }

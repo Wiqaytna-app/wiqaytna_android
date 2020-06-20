@@ -47,10 +47,10 @@ class SplashActivity : BaseActivity(), ProviderInstaller.ProviderInstallListener
         }
 
         if (TextUtils.isEmpty(
-                PreferencesHelper.getStringPreference(
-                    PreferencesHelper.STATS_UPDATE, ""
+                        PreferencesHelper.getStringPreference(
+                                PreferencesHelper.STATS_UPDATE, ""
+                        )
                 )
-            )
         ) {
             Utils.getStatistics()
         } else {
@@ -79,7 +79,6 @@ class SplashActivity : BaseActivity(), ProviderInstaller.ProviderInstallListener
             mHandler.postDelayed({
                 if (!Utils.isEmulator()) {
                     goToNextScreen()
-                    finish()
                 } else {
                     finish()
                 }
@@ -94,22 +93,23 @@ class SplashActivity : BaseActivity(), ProviderInstaller.ProviderInstallListener
         } else {
             startActivity(Intent(this, MainActivity::class.java))
         }
+        finishAndRemoveTask()
     }
 
     private fun getFCMToken() {
         FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    CentralLog.w(TAG, "failed to get fcm token ${task.exception}")
-                    return@addOnCompleteListener
-                } else {
-                    // Get new Instance ID token
-                    val token = task.result?.token
-                    firebaseToken = token.toString()
-                    // Log and toast
-                    CentralLog.d(TAG, "FCM token: $token")
+                .addOnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        CentralLog.w(TAG, "failed to get fcm token ${task.exception}")
+                        return@addOnCompleteListener
+                    } else {
+                        // Get new Instance ID token
+                        val token = task.result?.token
+                        firebaseToken = token.toString()
+                        // Log and toast
+                        CentralLog.d(TAG, "FCM token: $token")
+                    }
                 }
-            }
     }
 
     override fun onProviderInstallFailed(p0: Int, p1: Intent?) {

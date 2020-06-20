@@ -7,37 +7,37 @@
         android:required="true" />
 
     <!--
-        These three permissions are needed for Bluetooth low energy communication, the ACCESS_FINE_LOCATION 
+        These three permissions are needed for Bluetooth low energy communication, the ACCESS_FINE_LOCATION
         doesn't give any access to the user's GPS location.
 
         For more information see:
         https://developer.android.com/guide/topics/connectivity/bluetooth-le
 
         -->
-    
+
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    
+
      <!--
-        Used by the Boot receiver, we use it to get notified when the phone complets a boot operation, 
+        Used by the Boot receiver, we use it to get notified when the phone complets a boot operation,
         so we can start the Bluetooth monitoring service
     -->
-    
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    
+
     <!--
         Allows a regular application to use Service.startForeground
     -->
-    
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    
+
     <!--
         Permission an application must hold in order to use Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS.
         We use it to deactivate Android's battery optimization for the app, so it will continue to work in the background
         without any issues
     -->
-    
+
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
@@ -49,7 +49,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".onboarding.TouActivity"></activity>
+
+        <activity android:name=".onboarding.TouActivity"
+            android:taskAffinity=""
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="firebase_performance_logcat_enabled"
@@ -68,6 +71,8 @@
         <activity
             android:name=".SplashActivity"
             android:configChanges="keyboardHidden"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -75,17 +80,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".onboarding.PersonalInfosActivity"
+            android:taskAffinity=""
             android:screenOrientation="portrait" />
         <activity
             android:name=".onboarding.OnboardingActivity"
+            android:taskAffinity=""
             android:screenOrientation="portrait" />
         <activity
             android:name=".onboarding.PreOnboardingActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
             android:screenOrientation="portrait" />
 
         <receiver android:name=".boot.StartOnBootReceiver">
@@ -120,6 +132,7 @@
         <activity
             android:name=".permissions.RequestFileWritePermission"
             android:launchMode="singleTask"
+            android:taskAffinity=""
             android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />
 
         <service android:name=".services.BluetoothMonitoringService" />
@@ -127,9 +140,11 @@
         <activity
             android:name=".PeekActivity"
             android:screenOrientation="portrait"
+            android:taskAffinity=""
             android:theme="@style/AppTheme.DebugNoActionBar" />
         <activity
             android:name=".PlotActivity"
+            android:taskAffinity=""
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.DebugNoActionBar" />
 

@@ -47,9 +47,9 @@ private const val PERMISSION_REQUEST_ACCESS_LOCATION = 456
 private const val BATTERY_OPTIMISER = 789
 
 class OnboardingActivity : BaseFragmentActivity(),
-    SetupFragment.OnFragmentInteractionListener,
-    RegisterNumberFragment.OnFragmentInteractionListener,
-    OTPFragment.OnFragmentInteractionListener {
+        SetupFragment.OnFragmentInteractionListener,
+        RegisterNumberFragment.OnFragmentInteractionListener,
+        OTPFragment.OnFragmentInteractionListener {
 
     // [START declare_auth]
     //private var uid: String = ""
@@ -68,24 +68,39 @@ class OnboardingActivity : BaseFragmentActivity(),
 
     private fun getTemporaryID(): Task<HttpsCallableResult> {
         return TempIDManager.getTemporaryIDs(this, functions)
-            .addOnCompleteListener {
-                if (!isFinishing) {
-                    CentralLog.d(TAG, "Retrieved Temporary ID successfully")
-                    onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
-                    navigateTo(pager.currentItem + 2)
-                    Preference.putHandShakePin(
-                        WiqaytnaApp.AppContext,
-                        uid.substring(0, 5)
+                .addOnCompleteListener {
+
+                    Utils.firebaseAnalyticsEvent(
+                            this.applicationContext,
+                            "getTempID_Successful_onBoarding",
+                            "33",
+                            "getTempID successful onBoarding"
+                    );
+
+                    if (!isFinishing) {
+                        CentralLog.d(TAG, "Retrieved Temporary ID successfully")
+                        onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
+                        navigateTo(pager.currentItem + 2)
+                        Preference.putHandShakePin(
+                                WiqaytnaApp.AppContext,
+                                uid.substring(0, 5)
+                        )
+                    }
+                }.addOnFailureListener { exception ->
+                    crashlytics.recordException(exception)
+                    crashlytics.setCustomKey("error", "couldn't get temporary IDs")
+                    crashlytics.setCustomKey("method", "onBoarding")
+                    Utils.firebaseAnalyticsEvent(
+                            this,
+                            "getTempID_Failed_onBoarding",
+                            "37",
+                            "getTempID failed onBoarding"
                     )
+                    if (!isFinishing) {
+                        CentralLog.d(TAG, "Couldn't Retrieve Temporary ID")
+                        onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
+                    }
                 }
-            }.addOnFailureListener { exception ->
-                crashlytics.recordException(exception)
-                crashlytics.setCustomKey("error", "Couldn't Retrieve Temporary ID")
-                if (!isFinishing) {
-                    CentralLog.d(TAG, "Couldn't Retrieve Temporary ID")
-                    onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
-                }
-            }
     }
 
     private var mIsOpenSetting = false
@@ -130,9 +145,9 @@ class OnboardingActivity : BaseFragmentActivity(),
             }
 
             override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
             ) {
                 CentralLog.d(TAG, "OnPageScrolled")
             }
@@ -140,13 +155,13 @@ class OnboardingActivity : BaseFragmentActivity(),
             override fun onPageSelected(position: Int) {
                 CentralLog.d(TAG, "position: $position")
                 val onboardingFragment: OnboardingFragmentInterface =
-                    pagerAdapter.getItem(position)
+                        pagerAdapter.getItem(position)
                 onboardingFragment.becomesVisible()
                 when (position) {
                     0 -> {
                         Preference.putCheckpoint(
-                            baseContext,
-                            position
+                                baseContext,
+                                position
                         )
                     }
                     1 -> {
@@ -154,20 +169,20 @@ class OnboardingActivity : BaseFragmentActivity(),
                     }
                     2 -> {
                         Preference.putCheckpoint(
-                            baseContext,
-                            position
+                                baseContext,
+                                position
                         )
                     }
                     3 -> {
                         Preference.putCheckpoint(
-                            baseContext,
-                            position
+                                baseContext,
+                                position
                         )
                     }
                     4 -> {
                         Preference.putCheckpoint(
-                            baseContext,
-                            position
+                                baseContext,
+                                position
                         )
                     }
                 }
@@ -228,8 +243,8 @@ class OnboardingActivity : BaseFragmentActivity(),
             if (it.isDisabled) {
                 val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
                 startActivityForResult(
-                    enableBtIntent,
-                    REQUEST_ENABLE_BT
+                        enableBtIntent,
+                        REQUEST_ENABLE_BT
                 )
             } else {
                 setupPermissionsAndSettings()
@@ -251,8 +266,8 @@ class OnboardingActivity : BaseFragmentActivity(),
                 // Do not have permissions, request them now
                 if (!isFinishing) {
                     EasyPermissions.requestPermissions(
-                        this, getString(R.string.permission_location_rationale),
-                        PERMISSION_REQUEST_ACCESS_LOCATION, *perms
+                            this, getString(R.string.permission_location_rationale),
+                            PERMISSION_REQUEST_ACCESS_LOCATION, *perms
                     )
                 }
             }
@@ -271,9 +286,9 @@ class OnboardingActivity : BaseFragmentActivity(),
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Onboard Completed for Android Device")
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle)
         val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
-        finish()
+        finishAndRemoveTask()
     }
 
     private fun initBluetooth() {
@@ -293,25 +308,25 @@ class OnboardingActivity : BaseFragmentActivity(),
     private fun excludeFromBatteryOptimization() {
         CentralLog.d(TAG, "[excludeFromBatteryOptimization] ")
         val powerManager =
-            this.getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
+                this.getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
         val packageName = this.packageName
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val intent =
-                Utils.getBatteryOptimizerExemptionIntent(
-                    packageName
-                )
+                    Utils.getBatteryOptimizerExemptionIntent(
+                            packageName
+                    )
 
             if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
                 CentralLog.d(TAG, "Not on Battery Optimization whitelist")
                 //check if there's any activity that can handle this
                 if (Utils.canHandleIntent(
-                        intent,
-                        packageManager
-                    )
+                                intent,
+                                packageManager
+                        )
                 ) {
                     this.startActivityForResult(
-                        intent,
-                        BATTERY_OPTIMISER
+                            intent,
+                            BATTERY_OPTIMISER
                     )
                 } else {
                     //no way of handling battery optimizer
@@ -331,9 +346,9 @@ class OnboardingActivity : BaseFragmentActivity(),
             if (resultCode == Activity.RESULT_CANCELED) {
                 CentralLog.d(TAG, "request to enable bluetooth canceled")
                 Toast.makeText(
-                    baseContext,
-                    resources.getString(R.string.setup_app_permission),
-                    Toast.LENGTH_LONG
+                        baseContext,
+                        resources.getString(R.string.setup_app_permission),
+                        Toast.LENGTH_LONG
                 ).show()
                 return
             } else {
@@ -350,9 +365,9 @@ class OnboardingActivity : BaseFragmentActivity(),
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         CentralLog.d(TAG, "[onRequestPermissionsResult] requestCode $requestCode")
@@ -369,29 +384,29 @@ class OnboardingActivity : BaseFragmentActivity(),
                                 val dialogBuilder = AlertDialog.Builder(this)
                                 // set message of alert dialog
                                 dialogBuilder.setMessage(getString(R.string.open_location_setting))
-                                    // if the dialog is cancelable
-                                    .setCancelable(false)
-                                    // positive button text and action
-                                    .setPositiveButton(
-                                        getString(R.string.ok),
-                                        DialogInterface.OnClickListener { _, _ ->
-                                            CentralLog.d(TAG, "user also CHECKED never ask again")
-                                            mIsOpenSetting = true
-                                            val intent =
-                                                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                            val uri: Uri =
-                                                Uri.fromParts("package", packageName, null)
-                                            intent.data = uri
-                                            startActivity(intent)
+                                        // if the dialog is cancelable
+                                        .setCancelable(false)
+                                        // positive button text and action
+                                        .setPositiveButton(
+                                                getString(R.string.ok),
+                                                DialogInterface.OnClickListener { _, _ ->
+                                                    CentralLog.d(TAG, "user also CHECKED never ask again")
+                                                    mIsOpenSetting = true
+                                                    val intent =
+                                                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                    val uri: Uri =
+                                                            Uri.fromParts("package", packageName, null)
+                                                    intent.data = uri
+                                                    startActivity(intent)
 
-                                        })
-                                    // negative button text and action
-                                    .setNegativeButton(
-                                        getString(R.string.cancel),
-                                        DialogInterface.OnClickListener { dialog, _ ->
-                                            dialog.cancel()
-                                        }).show()
+                                                })
+                                        // negative button text and action
+                                        .setNegativeButton(
+                                                getString(R.string.cancel),
+                                                DialogInterface.OnClickListener { dialog, _ ->
+                                                    dialog.cancel()
+                                                }).show()
                             } else if (Manifest.permission.WRITE_CONTACTS.equals(permission)) {
                                 CentralLog.d(TAG, "user did not CHECKED never ask again")
                             } else {
@@ -445,72 +460,72 @@ class OnboardingActivity : BaseFragmentActivity(),
         speedUp = false
         resendingCode = false
         auth.signInAnonymously()
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    CentralLog.d(TAG, "signInAnonymously:success")
-                    val user = auth.currentUser
-                    sendPostRequest(user!!.uid, phoneNumber)
-                        .addOnSuccessListener {
-                            navigateToNextPage()
-                            updateUI(user)
-                        }
-                        .addOnFailureListener { exception ->
-                            crashlytics.recordException(exception)
-                            crashlytics.setCustomKey("error", "getOTPCode:failure")
-                            crashlytics.setCustomKey("phone", phoneNumber)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        CentralLog.d(TAG, "signInAnonymously:success")
+                        val user = auth.currentUser
+                        sendPostRequest(user!!.uid, phoneNumber)
+                                .addOnSuccessListener {
+                                    navigateToNextPage()
+                                    updateUI(user)
+                                }
+                                .addOnFailureListener { exception ->
+                                    crashlytics.recordException(exception)
+                                    crashlytics.setCustomKey("error", "getOTPCode:failure")
+                                    crashlytics.setCustomKey("phone", phoneNumber)
 
-                            CentralLog.d(TAG, "${exception.message}")
-                            onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
-                            CentralLog.w("getOTPCode:failure", task.exception.toString())
-                            Toast.makeText(
+                                    CentralLog.d(TAG, "${exception.message}")
+                                    onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
+                                    CentralLog.w("getOTPCode:failure", task.exception.toString())
+                                    Toast.makeText(
+                                            baseContext, resources.getString(R.string.server_problem),
+                                            Toast.LENGTH_SHORT
+                                    ).show()
+                                    updateUI(null)
+                                }
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
+                        CentralLog.w("signInAnonymously:failure", task.exception.toString())
+                        task.exception?.let {
+                            crashlytics.recordException(it)
+                            crashlytics.setCustomKey("error", "signInAnonymously failed")
+                        }
+
+                        Toast.makeText(
                                 baseContext, resources.getString(R.string.server_problem),
                                 Toast.LENGTH_SHORT
-                            ).show()
-                            updateUI(null)
-                        }
-                } else {
-                    // If sign in fails, display a message to the user.
-                    onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
-                    CentralLog.w("signInAnonymously:failure", task.exception.toString())
-                    task.exception?.let {
-                        crashlytics.recordException(it)
-                        crashlytics.setCustomKey("error", "signInAnonymously failed")
+                        ).show()
+                        updateUI(null)
                     }
-
-                    Toast.makeText(
-                        baseContext, resources.getString(R.string.server_problem),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    updateUI(null)
                 }
-            }
     }
 
     private fun sendPostRequest(uid: String, phoneNumber: String): Task<HttpsCallableResult> {
 
         val data = hashMapOf(
-            "phoneNumber" to phoneNumber,
-            "token" to firebaseToken,
-            "os" to "ANDROID"
+                "phoneNumber" to phoneNumber,
+                "token" to firebaseToken,
+                "os" to "ANDROID"
         )
         val functions = FirebaseFunctions.getInstance(BuildConfig.FIREBASE_REGION)
         return functions
-            .getHttpsCallable("getOTPCode")
-            .call(data)
+                .getHttpsCallable("getOTPCode")
+                .call(data)
     }
 
     private fun resendPostRequest(uid: String, phoneNumber: String): Task<HttpsCallableResult> {
 
         val data = hashMapOf(
-            "phoneNumber" to phoneNumber,
-            "token" to firebaseToken,
-            "os" to "ANDROID"
+                "phoneNumber" to phoneNumber,
+                "token" to firebaseToken,
+                "os" to "ANDROID"
         )
         val functions = FirebaseFunctions.getInstance(BuildConfig.FIREBASE_REGION)
         return functions
-            .getHttpsCallable("resendOTP")
-            .call(data)
+                .getHttpsCallable("resendOTP")
+                .call(data)
     }
 
     fun validateOTP(otp: String) {
@@ -521,49 +536,49 @@ class OnboardingActivity : BaseFragmentActivity(),
         onboardingActivityLoadingProgressBarFrame.visibility = View.VISIBLE
 
         val data = hashMapOf(
-            "OTP" to otp
+                "OTP" to otp
         )
         val functions = FirebaseFunctions.getInstance(BuildConfig.FIREBASE_REGION)
         functions
-            .getHttpsCallable("verifyOTP")
-            .call(data)
-            .addOnFailureListener { exception ->
-                crashlytics.recordException(exception)
-                crashlytics.setCustomKey("error", "verifyOTP Failed")
-                if (!isFinishing) {
-                    CentralLog.e("FF", exception.toString())
-                    onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
-                    updateOTPError(getString(R.string.unknown_error))
+                .getHttpsCallable("verifyOTP")
+                .call(data)
+                .addOnFailureListener { exception ->
+                    crashlytics.recordException(exception)
+                    crashlytics.setCustomKey("error", "verifyOTP Failed")
+                    if (!isFinishing) {
+                        CentralLog.e("FF", exception.toString())
+                        onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
+                        updateOTPError(getString(R.string.unknown_error))
+                    }
                 }
-            }
-            .addOnSuccessListener {
-                if (it.data.toString() == "true") {
-                    CentralLog.d("VerifyOTP", "Success")
-                    tv_error.visibility = View.INVISIBLE
-                    if (BluetoothMonitoringService.broadcastMessage == null || TempIDManager.needToUpdate(
-                            applicationContext
-                        )
-                    ) {
-                        getTemporaryID()
+                .addOnSuccessListener {
+                    if (it.data.toString() == "true") {
+                        CentralLog.d("VerifyOTP", "Success")
+                        tv_error?.visibility = View.INVISIBLE
+                        if (BluetoothMonitoringService.broadcastMessage == null || TempIDManager.needToUpdate(
+                                        applicationContext
+                                )
+                        ) {
+                            getTemporaryID()
+                        } else {
+                            if (!isFinishing) {
+                                CentralLog.d(TAG, "Retrieved Temporary ID successfully")
+                                onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
+                                navigateTo(pager.currentItem + 2)
+                                Preference.putHandShakePin(
+                                        WiqaytnaApp.AppContext,
+                                        uid.substring(0, 5)
+                                )
+                            }
+                        }
                     } else {
                         if (!isFinishing) {
-                            CentralLog.d(TAG, "Retrieved Temporary ID successfully")
+                            updateOTPError(getString(R.string.invalid_otp))
                             onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
-                            navigateTo(pager.currentItem + 2)
-                            Preference.putHandShakePin(
-                                WiqaytnaApp.AppContext,
-                                uid.substring(0, 5)
-                            )
+                            CentralLog.d("VERIFYOTP", "VERIFICATION FALSE")
                         }
                     }
-                } else {
-                    if (!isFinishing) {
-                        updateOTPError(getString(R.string.invalid_otp))
-                        onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
-                        CentralLog.d("VERIFYOTP", "VERIFICATION FALSE")
-                    }
                 }
-            }
     }
 
     fun resendCode(phoneNumber: String) {
@@ -578,8 +593,8 @@ class OnboardingActivity : BaseFragmentActivity(),
             crashlytics.setCustomKey("error", "couldn't resend the OTP")
             crashlytics.setCustomKey("phone", phoneNumber)
             Toast.makeText(
-                baseContext, resources.getString(R.string.server_problem),
-                Toast.LENGTH_SHORT
+                    baseContext, resources.getString(R.string.server_problem),
+                    Toast.LENGTH_SHORT
             ).show()
             onboardingActivityLoadingProgressBarFrame.visibility = View.GONE
         }
@@ -600,10 +615,10 @@ class OnboardingActivity : BaseFragmentActivity(),
     }
 
     private inner class ScreenSlidePagerAdapter(fm: FragmentManager) :
-        FragmentStatePagerAdapter(
-            fm,
-            BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-        ) {
+            FragmentStatePagerAdapter(
+                    fm,
+                    BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+            ) {
 
         val fragmentMap: MutableMap<Int, OnboardingFragmentInterface> = HashMap()
 

@@ -26,17 +26,21 @@ object TempIDManager {
         try {
             val file = File(context.filesDir, "tempIDs")
             file.writeText(packet)
-            Utils.firebaseAnalyticsEvent(context, "StoreTempID_Successful", "26", "getTempID successful");
+            Utils.firebaseAnalyticsEvent(
+                    context,
+                    "StoreTempID_Successful",
+                    "26",
+                    "getTempID successful"
+            );
         } catch (exception: Throwable) {
-            Utils.firebaseAnalyticsEvent(context, "StoreTempID_Failed", "27", "getTempID successful");
+            Utils.firebaseAnalyticsEvent(context, "StoreTempID_Failed", "27", "getTempID failed");
             crashlytics.recordException(exception)
             crashlytics.setCustomKey("error", "can't store tempIDs")
             crashlytics.setCustomKey("function", "storeTemporaryIDs")
             NotificationTemplates.diskFullWarningNotification(
-                context,
-                BuildConfig.SERVICE_FOREGROUND_CHANNEL_ID
+                    context,
+                    BuildConfig.SERVICE_FOREGROUND_CHANNEL_ID
             )
-
         }
 
     }
@@ -47,24 +51,24 @@ object TempIDManager {
             val readback = file.readText()
             CentralLog.d(TAG, "[TempID] fetched broadcastmessage from file:  $readback")
             var tempIDArrayList =
-                convertToTemporaryIDs(
-                    readback
-                )
+                    convertToTemporaryIDs(
+                            readback
+                    )
             var tempIDQueue =
-                convertToQueue(
-                    tempIDArrayList
-                )
+                    convertToQueue(
+                            tempIDArrayList
+                    )
             return getValidOrLastTemporaryID(
-                context,
-                tempIDQueue
+                    context,
+                    tempIDQueue
             )
         }
         return null
     }
 
     private fun getValidOrLastTemporaryID(
-        context: Context,
-        tempIDQueue: Queue<TemporaryID>
+            context: Context,
+            tempIDQueue: Queue<TemporaryID>
     ): TemporaryID? {
         CentralLog.d(TAG, "[TempID] Retrieving Temporary ID")
         var currentTime = System.currentTimeMillis()
@@ -95,8 +99,8 @@ object TempIDManager {
             CentralLog.d(TAG, "[TempID] Expiry time: ${foundTempIDExpiryTime}")
             CentralLog.d(TAG, "[TempID] Updating expiry time")
             Preference.putExpiryTimeInMillis(
-                context,
-                foundTempIDExpiryTime
+                    context,
+                    foundTempIDExpiryTime
             )
         }
 
@@ -106,14 +110,42 @@ object TempIDManager {
     private fun convertToTemporaryIDs(tempIDString: String): Array<TemporaryID>? {
         val gson: Gson = GsonBuilder().disableHtmlEscaping().create()
 
-        val tempIDResult = gson.fromJson(tempIDString, Array<TemporaryID>::class.java)
-        CentralLog.d(
-            TAG,
-            "[TempID] After GSON conversion: ${tempIDResult?.get(0)?.tempID} ${tempIDResult?.get(0)?.startTime}"
-        )
+        try {
+            val tempIDResult = gson.fromJson(tempIDString, Array<TemporaryID>::class.java)
+            CentralLog.d(
+                    TAG,
+                    "[TempID] After GSON conversion: ${tempIDResult?.get(0)?.tempID} ${tempIDResult?.get(
+                            0
+                    )?.startTime}"
+            )
+            return tempIDResult
+        } catch (exception: Throwable) {
+            crashlytics.recordException(exception)
+            crashlytics.setCustomKey("error", "couldn't parse tempIDString")
+            if (tempIDString.length <= 1000) {
+                crashlytics.setCustomKey("tempIDString", "$tempIDString")
+            } else {
+                crashlytics.setCustomKey("tempIDString length","${tempIDString.length}")
+                crashlytics.setCustomKey(
+                        "tempIDString_first_K",
+                        tempIDString.substring(0, 1000)
+                )
 
+                if(tempIDString.length <= 2000){
+                    crashlytics.setCustomKey(
+                            "tempIDString_second_part",
+                            tempIDString.substring(1000)
+                    )
+                } else {
+                    crashlytics.setCustomKey(
+                            "tempIDString_last_K",
+                            tempIDString.substring(tempIDString.length-1000)
+                    )
+                }
+            }
+        }
 
-        return tempIDResult
+        return null
     }
 
     private fun convertToQueue(tempIDArray: Array<TemporaryID>?): Queue<TemporaryID> {
@@ -138,70 +170,62 @@ object TempIDManager {
     }
 
     fun getTemporaryIDs(context: Context, functions: FirebaseFunctions): Task<HttpsCallableResult> {
-        CentralLog.d(TAG,"getTemporaryIDs called")
+        CentralLog.d(TAG, "getTemporaryIDs called")
         return functions.getHttpsCallable("getTempIDs").call().addOnSuccessListener {
-
-            Utils.firebaseAnalyticsEvent(context, "getTempID_Successful", "24", "getTempID successful");
-
 
             val result: HashMap<String, Any> = it.data as HashMap<String, Any>
             val tempIDs = result["tempIDs"]
 
             val status = result["status"].toString()
 
-            CentralLog.d(TAG,"tempIDs: $tempIDs")
-            CentralLog.d(TAG,"status: $status")
+            CentralLog.d(TAG, "tempIDs: $tempIDs")
+            CentralLog.d(TAG, "status: $status")
 
             if (status.toLowerCase().contentEquals("success")) {
                 CentralLog.w(TAG, "Retrieved Temporary IDs from Server")
                 val gson: Gson = GsonBuilder().disableHtmlEscaping().create()
                 val jsonByteArray = gson.toJson(tempIDs).toByteArray(Charsets.UTF_8)
                 storeTemporaryIDs(
-                    context,
-                    jsonByteArray.toString(Charsets.UTF_8)
+                        context,
+                        jsonByteArray.toString(Charsets.UTF_8)
                 )
 
                 val refreshTime = result["refreshTime"].toString()
                 var refresh = refreshTime.toLongOrNull() ?: 0
 
                 Preference.putNextFetchTimeInMillis(
-                    context,
-                    refresh * 1000
+                        context,
+                        refresh * 1000
                 )
                 Preference.putLastFetchTimeInMillis(
-                    context,
-                    System.currentTimeMillis()
+                        context,
+                        System.currentTimeMillis()
                 )
 
-                CentralLog.d(TAG,"refresh: ${Preference.getNextFetchTimeInMillis(context)}")
+                CentralLog.d(TAG, "refresh: ${Preference.getNextFetchTimeInMillis(context)}")
 
-                CentralLog.d(TAG,"lastFetch: ${Preference.getLastFetchTimeInMillis(context)}")
+                CentralLog.d(TAG, "lastFetch: ${Preference.getLastFetchTimeInMillis(context)}")
             }
 
-        }.addOnFailureListener { exception ->
-            CentralLog.d(TAG, "[TempID] Error getting Temporary IDs")
-            crashlytics.recordException(exception)
-            crashlytics.setCustomKey("error", "couldn't get temporary IDs")
-            Utils.firebaseAnalyticsEvent(context, "getTempID_Failed", "25", "getTempID failed");
         }
     }
 
     fun needToUpdate(context: Context): Boolean {
         val nextFetchTime =
-            Preference.getNextFetchTimeInMillis(context)
+                Preference.getNextFetchTimeInMillis(context)
         val currentTime = System.currentTimeMillis()
 
         val update = currentTime >= nextFetchTime
         CentralLog.i(
-            TAG,
-            "Need to update and fetch TemporaryIDs? $nextFetchTime vs $currentTime: $update"
+                TAG,
+                "Need to update and fetch TemporaryIDs? $nextFetchTime vs $currentTime: $update"
         )
         return update
     }
 
     fun needToRollNewTempID(context: Context): Boolean {
         val expiryTime =
-            Preference.getExpiryTimeInMillis(context)
+                Preference.getExpiryTimeInMillis(context)
         val currentTime = System.currentTimeMillis()
         val update = currentTime >= expiryTime
         CentralLog.d(TAG, "[TempID] Need to get new TempID? $expiryTime vs $currentTime: $update")
@@ -211,7 +235,7 @@ object TempIDManager {
     //Can Cleanup, this function always return true
     fun bmValid(context: Context): Boolean {
         val expiryTime =
-            Preference.getExpiryTimeInMillis(context)
+                Preference.getExpiryTimeInMillis(context)
         val currentTime = System.currentTimeMillis()
         val update = currentTime < expiryTime
 

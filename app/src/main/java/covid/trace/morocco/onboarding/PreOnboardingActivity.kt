@@ -23,6 +23,7 @@ class PreOnboardingActivity : BaseFragmentActivity() {
                     "Onboarding second screen"
             )
             startActivity(Intent(this, OnboardingActivity::class.java))
+            finish()
         }
 
         language.setOnClickListener {

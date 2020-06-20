@@ -69,8 +69,8 @@ class OTPFragment : OnboardingFragmentInterface() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_otp_new, container, false)
     }
@@ -92,10 +92,10 @@ class OTPFragment : OnboardingFragmentInterface() {
 
         language.setOnClickListener {
             Utils.firebaseAnalyticsEvent(
-                requireContext(),
-                "otp_screen_change_language",
-                "21",
-                "Onboarding third screen"
+                    requireContext(),
+                    "otp_screen_change_language",
+                    "21",
+                    "Onboarding third screen"
             )
 
             LocaleHelper.getInstance().switchLocale()
@@ -106,10 +106,10 @@ class OTPFragment : OnboardingFragmentInterface() {
             CentralLog.d(TAG, "resend pressed sent to $phoneNumber")
 
             Utils.firebaseAnalyticsEvent(
-                requireContext(),
-                "otp_screen_resend_otp",
-                "18",
-                "Onboarding third screen resend otp"
+                    requireContext(),
+                    "otp_screen_resend_otp",
+                    "18",
+                    "Onboarding third screen resend otp"
             )
 
             val onboardingActivity = activity as OnboardingActivity
@@ -217,7 +217,9 @@ class OTPFragment : OnboardingFragmentInterface() {
     override fun onError(error: String) {
         if (isDetached) return
 
-        Utils.firebaseAnalyticsEvent(requireContext(), "Otp_error", "15", error)
+        context?.let{
+            Utils.firebaseAnalyticsEvent(it, "Otp_error", "15", error)
+        }
         tv_error?.text = error
         tv_error?.visibility = View.VISIBLE
     }

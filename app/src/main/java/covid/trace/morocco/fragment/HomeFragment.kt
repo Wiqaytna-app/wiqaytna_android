@@ -4,6 +4,7 @@ import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.*
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -17,6 +18,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.app.NotificationManagerCompat
@@ -51,7 +53,6 @@ class HomeFragment : Fragment() {
 
     private var mIsBroadcastListenerRegistered = false
     private var counter = 0
-
     private lateinit var remoteConfig: FirebaseRemoteConfig
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,32 +95,63 @@ class HomeFragment : Fragment() {
 
         faq.setOnClickListener {
 
-            context?.let{
+            context?.let {
                 Utils.firebaseAnalyticsEvent(it, "open_faq", "13", "open faq")
             }
 
             val url = if (TextUtils.equals(
-                    PreferencesHelper.getCurrentLanguage(),
-                    PreferencesHelper.FRENCH_LANGUAGE_CODE
-                )
+                            PreferencesHelper.getCurrentLanguage(),
+                            PreferencesHelper.FRENCH_LANGUAGE_CODE
+                    )
             ) {
                 Utils.faqFrURL
             } else {
                 Utils.faqArURL
             }
-            val builder = CustomTabsIntent.Builder()
-            builder.setToolbarColor(ContextCompat.getColor(requireContext(), R.color.new_blue))
-            builder.addDefaultShareMenuItem()
-            val customTabsIntent = builder.build()
-            customTabsIntent.launchUrl(context, Uri.parse(url))
-        }
 
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            try {
+                val pInfo = context?.packageManager?.getApplicationInfo("com.android.chrome", 0);
+                if (pInfo != null && pInfo.enabled) {
+                    val builder = CustomTabsIntent.Builder()
+                    builder.setToolbarColor(
+                            ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.new_blue
+                            )
+                    )
+                    builder.addDefaultShareMenuItem()
+                    val customTabsIntent = builder.build()
+                    customTabsIntent.launchUrl(context, Uri.parse(url))
+                } else {
+                    try {
+                        startActivity(browserIntent)
+                    } catch (exception: ActivityNotFoundException) {
+                        Toast.makeText(
+                                context,
+                                resources.getString(R.string.install_navigator),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                }
+            } catch (exception: PackageManager.NameNotFoundException) {
+                try {
+                    startActivity(browserIntent)
+                } catch (exception: ActivityNotFoundException) {
+                    Toast.makeText(
+                            context,
+                            resources.getString(R.string.install_navigator),
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+            }
+        }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         Preference.registerListener(requireActivity().applicationContext, listener)
@@ -134,9 +166,9 @@ class HomeFragment : Fragment() {
         deaths.text = data.new_death
         val timeStamp = response.data.date._seconds * 1000
         if (TextUtils.equals(
-                PreferencesHelper.getCurrentLanguage(),
-                PreferencesHelper.FRENCH_LANGUAGE_CODE
-            )
+                        PreferencesHelper.getCurrentLanguage(),
+                        PreferencesHelper.FRENCH_LANGUAGE_CODE
+                )
         ) {
             val dateFormat = SimpleDateFormat("dd MMMM yyyy HH'h00'", Locale.FRANCE)
             updateDate.text = dateFormat.format(timeStamp)
@@ -144,7 +176,7 @@ class HomeFragment : Fragment() {
             val day = SimpleDateFormat("dd", Locale("ar", "ma")).format(timeStamp)
             val month = SimpleDateFormat("MMMM", Locale("ar", "ma")).format(timeStamp)
             val year = SimpleDateFormat("yyyy", Locale("ar", "ma")).format(timeStamp)
-            val hour = SimpleDateFormat("HH", Locale("ar", "ma")).format(timeStamp)+"h"
+            val hour = SimpleDateFormat("HH", Locale("ar", "ma")).format(timeStamp) + "h"
             CentralLog.d("update time", "$day $month $year $hour")
             updateDate.text = "$day $month $year $hour"
         }
@@ -180,14 +212,14 @@ class HomeFragment : Fragment() {
         remoteConfig.setConfigSettingsAsync(configSettings)
         remoteConfig.setDefaultsAsync(mapOf("ShareText" to getString(R.string.share_message)))
         remoteConfig.fetchAndActivate()
-            .addOnCompleteListener(activity as Activity) { task ->
-                if (task.isSuccessful) {
-                    val updated = task.result
-                    CentralLog.d(TAG, "Remote config fetch - success: $updated")
-                } else {
-                    CentralLog.d(TAG, "Remote config fetch - failed")
+                .addOnCompleteListener(activity as Activity) { task ->
+                    if (task.isSuccessful) {
+                        val updated = task.result
+                        CentralLog.d(TAG, "Remote config fetch - success: $updated")
+                    } else {
+                        CentralLog.d(TAG, "Remote config fetch - failed")
+                    }
                 }
-            }
     }
 
     private fun isShowRestartSetup(): Boolean {
@@ -203,9 +235,9 @@ class HomeFragment : Fragment() {
 
     private fun canRequestBatteryOptimizerExemption(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Utils.canHandleIntent(
-            Utils.getBatteryOptimizerExemptionIntent(
-                WiqaytnaApp.AppContext.packageName
-            ), WiqaytnaApp.AppContext.packageManager
+                Utils.getBatteryOptimizerExemptionIntent(
+                        WiqaytnaApp.AppContext.packageName
+                ), WiqaytnaApp.AppContext.packageManager
         )
     }
 
@@ -213,12 +245,12 @@ class HomeFragment : Fragment() {
         view_setup.isVisible = isShowRestartSetup()
         view_complete.isVisible = !isShowRestartSetup()
         if (view_setup.isVisible) {
-            context?.let{
+            context?.let {
                 Utils.firebaseAnalyticsEvent(
-                    it,
-                    "home_screen_setup_incomplete",
-                    "7",
-                    "home screen setup incomplete"
+                        it,
+                        "home_screen_setup_incomplete",
+                        "7",
+                        "home screen setup incomplete"
                 )
             }
         } else {
@@ -242,7 +274,7 @@ class HomeFragment : Fragment() {
             //location permission
             val perms = Utils.getRequiredPermissions()
             iv_location.isSelected =
-                EasyPermissions.hasPermissions(activity as MainActivity, *perms)
+                    EasyPermissions.hasPermissions(activity as MainActivity, *perms)
             if (iv_location.isSelected) {
                 iv_location.visibility = View.GONE
             } else {
@@ -251,7 +283,7 @@ class HomeFragment : Fragment() {
 
             //push notification
             iv_push.isSelected =
-                NotificationManagerCompat.from(activity as MainActivity).areNotificationsEnabled()
+                    NotificationManagerCompat.from(activity as MainActivity).areNotificationsEnabled()
 
             if (iv_push.isSelected) {
                 push_card_view.visibility = View.GONE
@@ -271,7 +303,7 @@ class HomeFragment : Fragment() {
 
             //battery ignore list
             val powerManager =
-                (activity as MainActivity).getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
+                    (activity as MainActivity).getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
             val packageName = (activity as MainActivity).packageName
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -309,10 +341,10 @@ class HomeFragment : Fragment() {
     private fun shareThisApp() {
         context?.let {
             Utils.firebaseAnalyticsEvent(
-                it,
-                FirebaseAnalytics.Event.SHARE,
-                "14",
-                "share the app"
+                    it,
+                    FirebaseAnalytics.Event.SHARE,
+                    "14",
+                    "share the app"
             )
         }
         var newIntent = Intent(Intent.ACTION_SEND)
@@ -346,7 +378,7 @@ class HomeFragment : Fragment() {
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
         val bluetoothManager =
-            (activity as MainActivity).getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+                (activity as MainActivity).getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothManager.adapter
     }
 
@@ -374,8 +406,8 @@ class HomeFragment : Fragment() {
                 // Do not have permissions, request them now
                 if (!isDetached) {
                     EasyPermissions.requestPermissions(
-                        this, getString(R.string.permission_location_rationale),
-                        PERMISSION_REQUEST_ACCESS_LOCATION, *perms
+                            this, getString(R.string.permission_location_rationale),
+                            PERMISSION_REQUEST_ACCESS_LOCATION, *perms
                     )
                 }
             }
@@ -397,9 +429,9 @@ class HomeFragment : Fragment() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         CentralLog.d(TAG, "[onRequestPermissionsResult]requestCode $requestCode")
@@ -418,11 +450,11 @@ class HomeFragment : Fragment() {
     }
 
     private var listener: SharedPreferences.OnSharedPreferenceChangeListener =
-        SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            when (key) {
-                "ANNOUNCEMENT" -> showNonEmptyAnnouncement()
+            SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+                when (key) {
+                    "ANNOUNCEMENT" -> showNonEmptyAnnouncement()
+                }
             }
-        }
 
     private fun clearAndHideAnnouncement() {
         view_announcement.isVisible = false
@@ -436,9 +468,9 @@ class HomeFragment : Fragment() {
         tv_announcement.text = HtmlCompat.fromHtml(new, HtmlCompat.FROM_HTML_MODE_COMPACT)
         tv_announcement.movementMethod = object : LinkMovementMethod() {
             override fun onTouchEvent(
-                widget: TextView?,
-                buffer: Spannable?,
-                event: MotionEvent?
+                    widget: TextView?,
+                    buffer: Spannable?,
+                    event: MotionEvent?
             ): Boolean {
                 if (event?.action == MotionEvent.ACTION_UP && widget != null && buffer != null) {
                     val x = event.x - widget.totalPaddingLeft + widget.scrollX
