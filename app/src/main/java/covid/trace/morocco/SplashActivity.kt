@@ -7,7 +7,6 @@ import android.os.Handler
 import android.text.TextUtils
 import com.google.android.gms.security.ProviderInstaller
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import covid.trace.morocco.WiqaytnaApp.Companion.firebaseToken
@@ -53,7 +52,7 @@ class SplashActivity : BaseActivity(), ProviderInstaller.ProviderInstallListener
                 )
             )
         ) {
-            getStatistics()
+            Utils.getStatistics()
         } else {
             val json = PreferencesHelper.getStringPreference(PreferencesHelper.STATS_UPDATE, "")
             val response = Gson().fromJson(json, StatisticsResponse::class.java)
@@ -62,7 +61,7 @@ class SplashActivity : BaseActivity(), ProviderInstaller.ProviderInstallListener
             val hoursElapsed = diff / 3600
             CentralLog.d("response hours elapsed", hoursElapsed.toString())
             if (hoursElapsed > 2) {
-                getStatistics()
+                Utils.getStatistics()
             } else {
                 WiqaytnaApp.statisticsData = response
             }
@@ -109,27 +108,6 @@ class SplashActivity : BaseActivity(), ProviderInstaller.ProviderInstallListener
                     firebaseToken = token.toString()
                     // Log and toast
                     CentralLog.d(TAG, "FCM token: $token")
-                }
-            }
-    }
-
-    private fun getStatistics() {
-        FirebaseFunctions.getInstance(BuildConfig.FIREBASE_REGION)
-            .getHttpsCallable("stats")
-            .call()
-            .continueWith { task ->
-                if (task.isSuccessful) {
-                    CentralLog.d("response", "${task.result!!.data}")
-                    val json: String = Gson().toJson(task.result!!.data)
-                    PreferencesHelper.setPreference(PreferencesHelper.STATS_UPDATE, json)
-                    val response = Gson().fromJson(json, StatisticsResponse::class.java)
-                    WiqaytnaApp.statisticsData = response
-                } else {
-                    if (task.exception != null) {
-                        crashlytics.recordException(task.exception!!)
-                    }
-                    crashlytics.setCustomKey("error", "couldn't get the latest stats")
-                    CentralLog.d("response", task.exception.toString())
                 }
             }
     }

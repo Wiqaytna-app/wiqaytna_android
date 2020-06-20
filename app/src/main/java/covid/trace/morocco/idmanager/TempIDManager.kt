@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import covid.trace.morocco.BuildConfig
 import covid.trace.morocco.Preference
+import covid.trace.morocco.Utils
 import covid.trace.morocco.logging.CentralLog
 import covid.trace.morocco.notifications.NotificationTemplates
 import covid.trace.morocco.services.BluetoothMonitoringService.Companion.bmValidityCheck
@@ -25,7 +26,9 @@ object TempIDManager {
         try {
             val file = File(context.filesDir, "tempIDs")
             file.writeText(packet)
+            Utils.firebaseAnalyticsEvent(context, "StoreTempID_Successful", "26", "getTempID successful");
         } catch (exception: Throwable) {
+            Utils.firebaseAnalyticsEvent(context, "StoreTempID_Failed", "27", "getTempID successful");
             crashlytics.recordException(exception)
             crashlytics.setCustomKey("error", "can't store tempIDs")
             crashlytics.setCustomKey("function", "storeTemporaryIDs")
@@ -137,6 +140,10 @@ object TempIDManager {
     fun getTemporaryIDs(context: Context, functions: FirebaseFunctions): Task<HttpsCallableResult> {
         CentralLog.d(TAG,"getTemporaryIDs called")
         return functions.getHttpsCallable("getTempIDs").call().addOnSuccessListener {
+
+            Utils.firebaseAnalyticsEvent(context, "getTempID_Successful", "24", "getTempID successful");
+
+
             val result: HashMap<String, Any> = it.data as HashMap<String, Any>
             val tempIDs = result["tempIDs"]
 
@@ -175,6 +182,7 @@ object TempIDManager {
             CentralLog.d(TAG, "[TempID] Error getting Temporary IDs")
             crashlytics.recordException(exception)
             crashlytics.setCustomKey("error", "couldn't get temporary IDs")
+            Utils.firebaseAnalyticsEvent(context, "getTempID_Failed", "25", "getTempID failed");
         }
     }
 

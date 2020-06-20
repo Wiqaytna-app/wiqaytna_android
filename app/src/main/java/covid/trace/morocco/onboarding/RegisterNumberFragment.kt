@@ -78,16 +78,6 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
         super.onViewCreated(view, savedInstanceState)
         CentralLog.i(TAG, "View created")
 
-        context?.let{
-            Utils.firebaseAnalyticsEvent(
-                it,
-                "phone_number_screen",
-                "2",
-                "Onboarding second screen"
-            )
-        }
-
-
         mView = view
 
         phone_number.addTextChangedListener(object : TextWatcher {

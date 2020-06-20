@@ -18,8 +18,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.functions.FirebaseFunctions
+import com.google.gson.Gson
 import covid.trace.morocco.bluetooth.gatt.*
 import covid.trace.morocco.logging.CentralLog
+import covid.trace.morocco.models.StatisticsResponse
 import covid.trace.morocco.scheduler.Scheduler
 import covid.trace.morocco.services.BluetoothMonitoringService
 import covid.trace.morocco.services.BluetoothMonitoringService.Companion.PENDING_ADVERTISE_REQ_CODE
@@ -362,6 +366,28 @@ object Utils {
 
         dialog.setCancelable(false)
         dialog.show()
+    }
+
+    fun getStatistics() {
+        var crashlytics = FirebaseCrashlytics.getInstance()
+        FirebaseFunctions.getInstance(BuildConfig.FIREBASE_REGION)
+                .getHttpsCallable("stats")
+                .call()
+                .continueWith { task ->
+                    if (task.isSuccessful) {
+                        CentralLog.d("getStats response", "${task.result!!.data}")
+                        val json: String = Gson().toJson(task.result!!.data)
+                        PreferencesHelper.setPreference(PreferencesHelper.STATS_UPDATE, json)
+                        val response = Gson().fromJson(json, StatisticsResponse::class.java)
+                        WiqaytnaApp.statisticsData = response
+                    } else {
+                        if (task.exception != null) {
+                            crashlytics.recordException(task.exception!!)
+                        }
+                        crashlytics.setCustomKey("error", "couldn't get the latest stats")
+                        CentralLog.d("getStats response", task.exception.toString())
+                    }
+                }
     }
 
     fun getJSONString(context: Context): String {

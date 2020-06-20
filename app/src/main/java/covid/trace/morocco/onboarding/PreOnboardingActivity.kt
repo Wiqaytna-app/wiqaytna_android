@@ -16,6 +16,12 @@ class PreOnboardingActivity : BaseFragmentActivity() {
         Utils.firebaseAnalyticsEvent(baseContext, "first_screen", "1", "Onboarding first screen")
 
         btn_onboardingStart.setOnClickListener {
+            Utils.firebaseAnalyticsEvent(
+                    baseContext,
+                    "phone_number_screen",
+                    "2",
+                    "Onboarding second screen"
+            )
             startActivity(Intent(this, OnboardingActivity::class.java))
         }
 

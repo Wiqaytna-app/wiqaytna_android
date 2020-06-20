@@ -80,10 +80,10 @@ class StatisticsFragment : Fragment() {
                 val day = SimpleDateFormat("dd", Locale("ar", "ma")).format(timeStamp)
                 val month = SimpleDateFormat("MMMM", Locale("ar", "ma")).format(timeStamp)
                 val year = SimpleDateFormat("yyyy", Locale("ar", "ma")).format(timeStamp)
-                val hour = SimpleDateFormat("HH", Locale("ar", "ma")).format(timeStamp)
-                CentralLog.d("update time", "$day $month $year الساعة $hour")
+                val hour = SimpleDateFormat("HH", Locale("ar", "ma")).format(timeStamp)+"h"
+                CentralLog.d("update time", "$day $month $year $hour")
                 lastUpdate.text =
-                    resources.getString(R.string.last_update_24_hours_ago) + "  " + "$day $month $year الساعة $hour"
+                        resources.getString(R.string.last_update_24_hours_ago) + "  " + "$day $month $year $hour"
             }
         }
 

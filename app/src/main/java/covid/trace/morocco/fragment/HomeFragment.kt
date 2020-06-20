@@ -29,6 +29,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
+import com.google.gson.Gson
 import covid.trace.morocco.*
 import covid.trace.morocco.logging.CentralLog
 import covid.trace.morocco.models.StatisticsResponse
@@ -55,6 +56,27 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (TextUtils.isEmpty(
+                        PreferencesHelper.getStringPreference(
+                                PreferencesHelper.STATS_UPDATE, ""
+                        )
+                )
+        ) {
+            Utils.getStatistics()
+        } else {
+            val json = PreferencesHelper.getStringPreference(PreferencesHelper.STATS_UPDATE, "")
+            val response = Gson().fromJson(json, StatisticsResponse::class.java)
+            val currentTimeInSeconds = System.currentTimeMillis() / 1000
+            val diff = currentTimeInSeconds - response.data.date._seconds
+            val hoursElapsed = diff / 3600
+            CentralLog.d("response hours elapsed", hoursElapsed.toString())
+            if (hoursElapsed > 2) {
+                Utils.getStatistics()
+            } else {
+                WiqaytnaApp.statisticsData = response
+            }
+        }
 
         showSetup()
 
@@ -122,9 +144,9 @@ class HomeFragment : Fragment() {
             val day = SimpleDateFormat("dd", Locale("ar", "ma")).format(timeStamp)
             val month = SimpleDateFormat("MMMM", Locale("ar", "ma")).format(timeStamp)
             val year = SimpleDateFormat("yyyy", Locale("ar", "ma")).format(timeStamp)
-            val hour = SimpleDateFormat("HH", Locale("ar", "ma")).format(timeStamp)
-            CentralLog.d("update time", "$day $month $year الساعة $hour")
-            updateDate.text = "$day $month $year الساعة $hour"
+            val hour = SimpleDateFormat("HH", Locale("ar", "ma")).format(timeStamp)+"h"
+            CentralLog.d("update time", "$day $month $year $hour")
+            updateDate.text = "$day $month $year $hour"
         }
 
     }
