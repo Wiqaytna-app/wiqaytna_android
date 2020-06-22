@@ -62,7 +62,10 @@ class StatisticsFragment : Fragment() {
             deaths.text = data.new_death
             confirmed_cases.text = data.new_confirmed
 
-            regions?.sortByDescending { format?.parse(it.total)?.toDouble() }
+            regions?.sortByDescending {
+                val cleanStringValue = it.total.replace("\\p{C}".toRegex(), "").replace("[^\\x00-\\x7F]".toRegex(), "").replace("[\\p{Cntrl}&&[^\\r\\n\\t]]".toRegex(), "")
+                format?.parse(cleanStringValue)?.toDouble()
+            }
             val adapter = regions?.let{RegionsAdapter(it)}
             regionsList.adapter = adapter
             regionsList.layoutManager = LinearLayoutManager(context)
