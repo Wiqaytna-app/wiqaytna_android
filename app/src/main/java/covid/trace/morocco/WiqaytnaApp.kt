@@ -29,9 +29,9 @@ class WiqaytnaApp : Application() {
         LocaleHelper.setFont("fonts/Almarai-Regular.ttf")
     }
 
-    override fun attachBaseContext(base: Context?) {
+    override fun attachBaseContext(base: Context) {
         LocaleHelper.init(base)
-        super.attachBaseContext(LocaleHelper.getInstance().setLocale(base))
+        super.attachBaseContext(LocaleHelper.setLocale(base))
     }
 
     companion object {

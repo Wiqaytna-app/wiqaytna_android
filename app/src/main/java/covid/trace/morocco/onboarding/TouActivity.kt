@@ -39,7 +39,7 @@ class TouActivity : BaseFragmentActivity() {
                 "23",
                 "Onboarding fourth screen"
             )
-            LocaleHelper.getInstance().switchLocale()
+            LocaleHelper.switchLocale()
             recreate()
         }
 

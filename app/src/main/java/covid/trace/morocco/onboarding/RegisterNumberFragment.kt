@@ -111,16 +111,13 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
         }
 
         language.setOnClickListener {
-            context?.let{
-                Utils.firebaseAnalyticsEvent(
-                    it,
-                    "phone_number_screen_change_language",
-                    "20",
-                    "Onboarding second screen"
-                )
-            }
-
-            LocaleHelper.getInstance().switchLocale()
+            Utils.firebaseAnalyticsEvent(
+                requireContext(),
+                "phone_number_screen_change_language",
+                "20",
+                "Onboarding second screen"
+            )
+            LocaleHelper.switchLocale()
             requireActivity().recreate()
         }
     }

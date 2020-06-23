@@ -37,16 +37,13 @@ class SetupFragment : OnboardingFragmentInterface() {
         }
 
         language.setOnClickListener {
-            context?.let {
-                Utils.firebaseAnalyticsEvent(
-                    it,
-                    "setup_screen_change_language",
-                    "22",
-                    "Onboarding fourth screen"
-                )
-            }
-
-            LocaleHelper.getInstance().switchLocale()
+            Utils.firebaseAnalyticsEvent(
+                requireContext(),
+                "setup_screen_change_language",
+                "22",
+                "Onboarding fourth screen"
+            )
+            LocaleHelper.switchLocale()
             requireActivity().recreate()
         }
     }
